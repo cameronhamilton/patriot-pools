@@ -374,26 +374,115 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
 .sch{gap:5px;font-size:13px;padding:6px 8px}
 .step .x{font-size:22px;min-height:36px}
 .how{padding:12px 20px;font-size:14px;line-height:1.5;background:#f0f9ff;border-top:1px solid var(--line)}
-.help{margin-bottom:18px;border-color:color-mix(in srgb,var(--brand) 35%,#fff);background:linear-gradient(180deg,#f0f9ff,#fff)}
-.how3{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:n}
-.how3 li{counter-increment:n;display:flex;gap:10px;align-items:flex-start;font-size:14.5px}
-.how3 li::before{content:counter(n);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
 #toast.act{pointer-events:auto;display:flex;gap:14px;align-items:center}
 #toast button{border:0;background:none;color:#7dd3fc;font-weight:700;cursor:pointer;font-size:14px;padding:4px 2px}
-@media (max-width:860px){.how3{grid-template-columns:1fr;gap:10px}}
 @media (max-width:640px){body{font-size:16px}.sub{font-size:14px}.how{padding:12px 16px}}
 .logo img{width:38px;height:38px;border-radius:50%;display:block;box-shadow:0 0 0 1px var(--line)}
 .logo{color:var(--brand);font-weight:800;letter-spacing:.01em}
 .top{border-bottom:2px solid var(--red)}
+
+/* ---------- customers ---------- */
+.av{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-weight:700;font-size:15px;color:hsl(var(--h) 45% 28%);background:hsl(var(--h) 60% 91%)}
+.av.lg{width:60px;height:60px;font-size:21px}
+.clist{list-style:none;margin:0;padding:0}
+.clist li{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s}
+.clist li:last-child{border-bottom:0}
+.clist li:hover{background:#f6f8fb}
+.clist li.none{justify-content:center;color:var(--muted);cursor:default}
+.qa{display:flex;gap:6px;flex-shrink:0}
+.ib{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--brand);cursor:pointer;text-decoration:none;transition:background .15s,transform .12s;flex-shrink:0;padding:0}
+.ib:hover{background:#f6f8fb}
+.ib:active{transform:scale(.9)}
+.ib svg{width:18px;height:18px}
+.pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--grey-bg);color:#475569;white-space:nowrap;flex-shrink:0}
+.back{display:inline-flex;align-items:center;gap:2px;border:0;background:none;color:var(--brand);font-weight:600;cursor:pointer;padding:6px 0;margin-bottom:10px;font-size:15px}
+.back svg{width:20px;height:20px}
+.chead{display:flex;gap:16px;align-items:center}
+.chead h1{font-size:24px;letter-spacing:-.02em;line-height:1.2}
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.act{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:12px;background:color-mix(in srgb,var(--brand) 7%,#fff);color:var(--brand);font-weight:600;font-size:13.5px;border:0;cursor:pointer;text-decoration:none;transition:background .15s,transform .12s}
+.act:hover{background:color-mix(in srgb,var(--brand) 12%,#fff)}
+.act:active{transform:scale(.95)}
+.act svg{width:22px;height:22px}
+.act.off{opacity:.35;pointer-events:none}
+.lastc{margin-top:12px;font-size:13.5px;color:var(--muted)}
+.cgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;align-items:start;margin-top:18px}
+.info{display:grid;gap:14px;font-size:15px}
+.info>div{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.info svg{width:18px;height:18px;color:var(--muted);flex-shrink:0;margin-top:2px}
+.info a{color:var(--ink);text-decoration:none;word-break:break-word}
+.info a.add{color:var(--brand);font-weight:600;cursor:pointer}
+.info small{display:block;color:var(--muted)}
+.qic{width:40px;height:40px;border-radius:10px;background:var(--grey-bg);display:grid;place-items:center;color:var(--muted);flex-shrink:0}
+.qic.has{background:color-mix(in srgb,var(--brand) 10%,#fff);color:var(--brand)}
+.qic svg{width:20px;height:20px}
+.qr{display:grid;gap:4px;justify-items:end;flex-shrink:0}
+.st.declined{background:#fee2e2;color:#b91c1c}
+.tl{display:grid}
+.upd{border-left:2px solid var(--line);margin-left:6px;padding:0 0 22px 20px;position:relative;animation:rise .4s var(--ease) backwards}
+.upd::before{content:"";position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px #fff}
+.upd:last-child{padding-bottom:0;border-left-color:transparent}
+.upd-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.upd-h .x{margin-left:auto}
+.upd p{margin:6px 0 10px;white-space:pre-wrap}
+.sentmark{font-size:12px;font-weight:700;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:99px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:12px}
+.ph{border:0;padding:0;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--grey-bg);cursor:zoom-in;display:block}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s var(--ease)}
+.ph:hover img{transform:scale(1.06)}
+.upd-f{display:flex;gap:8px;flex-wrap:wrap}
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.pick{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--grey-bg);animation:pop .4s var(--ease)}
+.pick img{width:100%;height:100%;object-fit:cover;display:block}
+.pick button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(15,23,42,.72);color:#fff;cursor:pointer;font-size:17px;line-height:1}
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px;border:1.5px dashed #cbd5e1;border-radius:12px;color:var(--brand);font-weight:600;cursor:pointer;text-align:center;transition:background .15s,border-color .15s}
+.drop:hover{background:#f8fafc;border-color:var(--brand)}
+.drop svg{width:26px;height:26px}
+.drop small{color:var(--muted);font-weight:400}
+.drop input{display:none}
+.filebox{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+.filebox .grow{word-break:break-all}
+.filebox a{color:var(--brand);font-weight:600}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--grey-bg);padding:4px;border-radius:10px}
+.seg button{border:0;background:none;padding:9px;border-radius:7px;font-weight:600;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(15,23,42,.1)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chips button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-size:13.5px;font-weight:600;cursor:pointer;color:#475569;transition:background .15s,color .15s,border-color .15s}
+.chips button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.tip{font-size:13.5px;padding:10px 12px;border-radius:10px;background:#f0f9ff;color:#0c4a6e}
+.linkbtn{border:0;background:none;color:var(--brand);font-weight:600;cursor:pointer;padding:4px 0;text-align:left;font-size:14px}
+dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100vw;color:#e2e8f0}
+#lb .lb-img{display:grid;place-items:center;min-height:200px;position:relative}
+#lb img{display:block;max-width:100%;max-height:78dvh;margin:auto;animation:fade .25s ease}
+#lb .lb-f{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px}
+#lb .ib{background:rgba(255,255,255,.08);border-color:transparent;color:#fff}
+#gear{display:none;margin-left:auto}
+@media (max-width:980px){.cgrid{grid-template-columns:1fr}}
+@media (max-width:640px){
+  nav button[data-view=settings]{display:none}
+  #gear{display:grid}
+  .chead h1{font-size:21px}
+  .chead{gap:12px}
+  .acts{gap:8px}
+  .clist li{padding:12px}
+  .clist .pill,.clist .pnum{display:none}
+  #custSearch{width:100%!important;flex:1 1 100%}
+  .clist .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pgrid{grid-template-columns:repeat(3,1fr)}
+  dialog#lb{margin:auto;border-radius:14px;width:calc(100vw - 16px)}
+  dialog#lb[open]{animation:dlgIn .25s var(--ease)}
+}
 </style>
 </head>
 <body>
 
 <header class="top"><div class="top-in">
   <div class="logo"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M2 9c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2.5 5-1.5M2 16c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2.5 5-1.5"/></svg></i><span id="brandName">Pools &amp; Spa Co.</span></div>
+  <button class="ib" id="gear" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></svg></button>
   <nav id="nav">
     <button data-view="dash" class="on">Dashboard</button>
     <button data-view="jobs">Jobs</button>
+    <button data-view="cust">Customers</button>
     <button data-view="cal">Calendar</button>
     <button data-view="log">Emails</button>
     <button data-view="settings">Settings</button>
@@ -406,14 +495,6 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
     <div class="head">
       <div><h1>Dashboard</h1><p id="dashDate"></p></div>
       <div class="tools"><button class="btn ghost" data-new="appt">+ Appointment</button><button class="btn" data-new="job">+ New job</button></div>
-    </div>
-    <div class="panel help" id="help" hidden>
-      <div class="panel-h"><h2>How it works</h2><button class="btn ghost sm" id="helpOk">Got it</button></div>
-      <ol class="how3">
-        <li><span><b>Open a job</b> on the Jobs page and tick each step when it is done.</span></li>
-        <li><span><b>Add the next step</b> in the box at the bottom of the job.</span></li>
-        <li><span><b>Email the client</b> an update. Their address is already filled in.</span></li>
-      </ol>
     </div>
     <div class="stats" id="stats"></div>
     <div class="dash" id="dash"></div>
@@ -432,6 +513,21 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
       </div>
     </div>
     <div class="grid" id="jobs"></div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section id="view-cust" hidden>
+    <div id="custList">
+      <div class="head">
+        <div><h1>Customers</h1><p>Contact details, quotes and photo updates for every client.</p></div>
+        <div class="tools">
+          <input class="in" id="custSearch" placeholder="Search name, address, phone…" style="width:250px">
+          <button class="btn" id="newCust">+ New customer</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden"><ul class="clist" id="custUl"></ul></div>
+    </div>
+    <div id="custDetail" hidden></div>
   </section>
 
   <!-- CALENDAR -->
@@ -487,7 +583,6 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
         <p class="sub" style="margin-bottom:16px">Everything is stored in this browser. Export a backup to move it to another computer.</p>
         <div class="tools">
           <button class="btn" type="button" id="xlBtn">Paste from Excel</button>
-          <button class="btn ghost" type="button" id="helpShow">Show the how-it-works guide</button>
           <button class="btn ghost" type="button" id="exportBtn">Export backup</button>
           <button class="btn ghost" type="button" id="importBtn">Import backup</button>
           <button class="btn danger" type="button" id="resetBtn">Reset to sample data</button>
@@ -505,8 +600,9 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
     <label class="f">Job address<input class="in" name="address" required placeholder="1028 Concord"></label>
     <div class="two">
       <label class="f">Client name<input class="in" name="client" placeholder="Jane Smith"></label>
-      <label class="f">Client email<input class="in" name="email" type="email" placeholder="jane@example.com"></label>
+      <label class="f">Mobile phone<input class="in" name="phone" type="tel" placeholder="(555) 555-0100"></label>
     </div>
+    <label class="f">Client email<input class="in" name="email" type="email" placeholder="jane@example.com"></label>
     <label class="f">Internal notes<textarea class="in" name="notes" rows="2" placeholder="Never shown to the client"></textarea></label>
     <label class="check" id="arcWrap"><input type="checkbox" name="archived"><span>Archived (job finished)</span></label>
     <label class="check" id="tplWrap"><input type="checkbox" name="tpl" checked><span>Start with the standard checklist<small id="tplNote"></small></span></label>
@@ -567,6 +663,59 @@ button.tick.pulse{animation:pulse .45s var(--ease)}
   </div>
 </dialog>
 
+<!-- message dialog -->
+<dialog id="msgDlg">
+  <div class="dlg-h"><h2 id="msgTitle">Message</h2><button class="x" type="button" data-close>×</button></div>
+  <div class="dlg-b">
+    <div class="seg" id="msgSeg"><button type="button" data-mode="text">Text message</button><button type="button" data-mode="email">Email</button></div>
+    <p class="sub" id="msgTo"></p>
+    <div><span class="f">Start from</span><div class="chips" id="msgChips"></div></div>
+    <label class="f" id="msgSubjWrap">Subject<input class="in" id="msgSubj"></label>
+    <label class="f">Message<textarea class="in" id="msgBody" rows="6"></textarea></label>
+    <p class="tip" id="msgTip" hidden></p>
+    <button class="linkbtn" type="button" id="msgDesigned">Send the full designed project update instead ›</button>
+  </div>
+  <div class="dlg-f"><button class="btn ghost" type="button" id="msgCopy">Copy</button><button class="btn" type="button" id="msgGo">Open Messages</button></div>
+</dialog>
+
+<!-- quote dialog -->
+<dialog id="quoteDlg"><form id="quoteForm">
+  <div class="dlg-h"><h2 id="quoteTitle">New quote</h2><button class="x" type="button" data-close>×</button></div>
+  <div class="dlg-b">
+    <label class="f">What is it for<input class="in" name="title" required placeholder="Pool, spa and decking"></label>
+    <div class="two">
+      <label class="f">Amount ($)<input class="in" name="amount" type="number" inputmode="decimal" min="0" step="any" placeholder="45000"></label>
+      <label class="f">Status<select class="in" name="status"><option value="draft">Draft</option><option value="sent">Sent to client</option><option value="accepted">Accepted</option><option value="declined">Declined</option></select></label>
+    </div>
+    <label class="f">Date<input class="in" name="date" type="date" required></label>
+    <div id="qFileBox"></div>
+    <label class="f">Notes<textarea class="in" name="notes" rows="2"></textarea></label>
+  </div>
+  <div class="dlg-f">
+    <button class="btn danger" type="button" id="qDelete" style="margin-right:auto">Delete</button>
+    <button class="btn ghost" type="button" id="qShare" hidden>Send file</button>
+    <button class="btn" type="submit">Save</button>
+  </div>
+</form></dialog>
+
+<!-- update dialog -->
+<dialog id="updDlg"><form id="updForm">
+  <div class="dlg-h"><h2>Post a project update</h2><button class="x" type="button" data-close>×</button></div>
+  <div class="dlg-b">
+    <p class="sub" id="updFor"></p>
+    <label class="f">What happened?<textarea class="in" name="text" rows="4" required placeholder="Tile is set on the spa spillway and the coping is going on tomorrow."></textarea></label>
+    <div class="picks" id="updPicks"></div>
+    <label class="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>Add photos<small>Take new ones or pick from your photos</small><input type="file" id="updFiles" accept="image/*" multiple></label>
+  </div>
+  <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="submit" id="updSave">Post update</button></div>
+</form></dialog>
+
+<!-- photo viewer -->
+<dialog id="lb">
+  <div class="lb-img"><img id="lbImg" alt=""></div>
+  <div class="lb-f"><button class="ib" type="button" id="lbPrev" aria-label="Previous photo">‹</button><span id="lbCount"></span><button class="ib" type="button" id="lbNext" aria-label="Next photo">›</button><button class="ib" type="button" data-close aria-label="Close">×</button></div>
+</dialog>
+
 <!-- excel dialog -->
 <dialog id="xlDlg" class="big">
   <div class="dlg-h"><h2>Paste from Excel</h2><button class="x" type="button" data-close>×</button></div>
@@ -625,13 +774,35 @@ function seed() {
   return {jobs, appts};
 }
 
+function seedCustomers() {
+  const D = 864e5, now = Date.now();
+  const info = {
+    '1028 Concord': ['(555) 010-4417', [['Pool, spa and decking', 68500, 'accepted', -60], ['Waterfall lights add-on', 2350, 'sent', -2]],
+      [[1, 'Concrete pad is poured and curing. Tile arrives tomorrow morning.'], [8, 'Long plumb finished and pressure tested. Everything held.']]],
+    '17548 Julees Walk Lane': ['(555) 010-2283', [['Fence and gas line', 6800, 'accepted', -40]],
+      [[6, 'Gas line is in and the trenches are backfilled. Fence posts go in next.']]],
+    '11421 Fountaingrove Drive': ['(555) 010-7790', [['Pool and equipment package', 54200, 'accepted', -75]],
+      [[3, 'Sand delivered and the equipment is ordered. Backfill is booked for this week.']]],
+    '5117 Grassy Creek': ['(555) 010-3352', [['Pool build', 49900, 'accepted', -30], ['Spa upgrade', 9400, 'draft', -1]],
+      [[9, 'Permit approved. The dig is done and the rebar is set.']]],
+  };
+  state.jobs.forEach(j => {
+    const x = info[j.address]; if (!x) return;
+    if (!j.phone) j.phone = x[0];
+    x[1].forEach(([title, amount, status, d]) => state.quotes.push({id: uid(), jobId: j.id, title, amount, status, date: ymd(addDays(d)), notes: '', fileId: '', fileName: '', fileType: ''}));
+    x[2].forEach(([d, text]) => state.updates.push({id: uid(), jobId: j.id, at: now - d * D - 5 * 36e5, text, photos: []}));
+  });
+  state.custSeeded = true;
+}
+
 let state, view = 'dash', entering = false;
 const pctMem = new Map();
 function load() {
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
   if (!state || !Array.isArray(state.jobs)) state = {settings: {}, log: [], ...seed()};
   state.settings = {...DEFAULTS, ...state.settings};
-  state.log = state.log || []; state.appts = state.appts || [];
+  state.log = state.log || []; state.appts = state.appts || []; state.quotes = state.quotes || []; state.updates = state.updates || [];
+  if (!state.custSeeded) { seedCustomers(); save(); }
   if (!state.logSeeded && !state.log.length) { seedLog(); save(); }
 }
 function seedLog() {
@@ -719,7 +890,6 @@ function renderDash() {
 
   const stats = [['jobs', 'Active jobs', act.length, 'in progress', '#1b2a4e'], ['tasks', 'Open tasks', c.next + c.todo, c.next + ' up next', '#b45309'],
     ['cal', 'Appointments', week, 'next 7 days', '#7c3aed'], ['mail', 'Client emails', state.log.length, 'sent so far', '#15803d']];
-  $('#help').hidden = !!state.settings.hideHelp;
   const st = $('#stats');
   st.innerHTML = stats.map(([ic, a, n, sub, col], i) => `<div class="stat" data-view="${['jobs', 'jobs', 'cal', 'log'][i]}" style="--i:${i};--c:${col}"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[ic]}</svg></div><div><span>${a}</span><b data-n="${n}">${n}</b><small>${sub}</small></div></div>`).join('');
   st.classList.toggle('enter', entering);
@@ -814,7 +984,7 @@ function jobCard(j, i) {
     </button>
     <div class="prog">${bar('j' + j.id, pct)}<span>${done} of ${total} complete</span></div>
     <div class="body"><div>
-    <div class="card-actions"><button class="btn ghost sm" data-act="edit">Edit job</button><button class="btn sm" data-act="mail">Email update${fresh ? `<span class="dot">${fresh} new</span>` : ''}</button></div>
+    <div class="card-actions"><button class="btn ghost sm" data-act="cust">Customer</button><button class="btn ghost sm" data-act="edit">Edit job</button><button class="btn sm" data-act="mail">Email update${fresh ? `<span class="dot">${fresh} new</span>` : ''}</button></div>
     <ul class="tasks">${hide ? `<li class="hid">${done} completed ${done === 1 ? 'task' : 'tasks'} hidden</li>` : ''}${rows.map(taskRow).join('') || (hide ? '' : '<li class="empty">No work scheduled yet.</li>')}</ul>
     <form class="add">
       <input class="in t-new" name="title" placeholder="Type the next step here…" required>
@@ -829,7 +999,7 @@ const jobsEl = $('#jobs');
 function renderJobs() {
   const q = $('#search').value.trim().toLowerCase(), arch = $('#show').value === 'archived';
   const list = state.jobs.filter(j => !!j.archived === arch).filter(j => !q ||
-    [j.address, j.client, j.email, ...j.tasks.flatMap(t => [t.title, t.who])].join(' ').toLowerCase().includes(q));
+    [j.address, j.client, j.email, j.phone, ...j.tasks.flatMap(t => [t.title, t.who])].join(' ').toLowerCase().includes(q));
   const crews = [...new Set(state.jobs.flatMap(j => j.tasks.map(t => t.who)).filter(Boolean))].sort();
   jobsEl.classList.toggle('enter', entering);
   jobsEl.innerHTML = `<datalist id="crews">${crews.map(c => `<option value="${esc(c)}">`).join('')}</datalist>` +
@@ -858,6 +1028,7 @@ jobsEl.addEventListener('click', e => {
     openJobs[o ? 'add' : 'delete'](j.id); c.querySelector('.card-h').setAttribute('aria-expanded', o); return syncExp();
   }
   if (act === 'edit') openJob(j);
+  if (act === 'cust') openCustomer(j.id);
   if (act === 'mail') openMail(j.id);
   if (act === 'sched') {
     const t = j.tasks.find(t => t.id === e.target.closest('[data-task]').dataset.task), ap = state.appts.find(a => a.taskId === t.id);
@@ -886,12 +1057,12 @@ jobsEl.addEventListener('submit', e => {
 });
 
 /* ---------- job dialog ---------- */
-let editing = null;
-function openJob(j) {
-  editing = j || null;
+let editing = null, newFromCust = false;
+function openJob(j, fromCust) {
+  editing = j || null; newFromCust = !j && !!fromCust;
   const f = $('#jobForm');
-  $('#jobDlgTitle').textContent = j ? 'Edit job' : 'New job';
-  f.address.value = j?.address || ''; f.client.value = j?.client || ''; f.email.value = j?.email || '';
+  $('#jobDlgTitle').textContent = j ? (view === 'cust' ? 'Edit customer' : 'Edit job') : newFromCust ? 'New customer' : 'New job';
+  f.address.value = j?.address || ''; f.client.value = j?.client || ''; f.email.value = j?.email || ''; f.phone.value = j?.phone || '';
   f.notes.value = j?.notes || ''; f.archived.checked = !!j?.archived;
   $('#jobDelete').hidden = !j; $('#arcWrap').hidden = !j; $('#tplWrap').hidden = !!j;
   f.tpl.checked = true; $('#tplNote').textContent = `${tplLines().length} steps. Edit the list in Settings.`;
@@ -899,19 +1070,23 @@ function openJob(j) {
 }
 $('#jobForm').onsubmit = e => {
   e.preventDefault();
-  const f = e.target, d = {address: f.address.value.trim(), client: f.client.value.trim(), email: f.email.value.trim(), notes: f.notes.value.trim(), archived: f.archived.checked};
+  const f = e.target, d = {address: f.address.value.trim(), client: f.client.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), notes: f.notes.value.trim(), archived: f.archived.checked};
   if (editing) Object.assign(editing, d);
   else {
     const tasks = f.tpl.checked ? tplLines().map((title, i) => ({id: uid(), title, who: '', status: i ? 'todo' : 'next', createdAt: Date.now(), doneAt: null, notified: true})) : [];
     const nj = {id: uid(), lastEmailAt: null, tasks, ...d, archived: false};
     state.jobs.unshift(nj); save(); closeDlg($('#jobDlg'));
+    if (newFromCust) return openCustomer(nj.id);
     $('#search').value = ''; $('#show').value = 'active'; show('jobs'); return flashJob(nj.id);
   }
   save(); closeDlg($('#jobDlg')); refresh();
 };
 $('#jobDelete').onclick = () => {
-  if (!editing || !confirm(`Delete "${editing.address}" and all its tasks? This cannot be undone.`)) return;
+  if (!editing || !confirm(`Delete "${editing.address}" with all its steps, quotes and photo updates? This cannot be undone.`)) return;
   state.jobs = state.jobs.filter(j => j !== editing);
+  const gone = state.updates.filter(u => u.jobId === editing.id).flatMap(u => u.photos).concat(state.quotes.filter(q => q.jobId === editing.id && q.fileId).map(q => q.fileId));
+  state.updates = state.updates.filter(u => u.jobId !== editing.id); state.quotes = state.quotes.filter(q => q.jobId !== editing.id);
+  dropFiles(gone); if (custId === editing.id) custId = null;
   state.appts.forEach(a => { if (a.jobId === editing.id) a.jobId = ''; });
   save(); closeDlg($('#jobDlg')); refresh();
 };
@@ -1102,6 +1277,354 @@ $('#mCopy').onclick = async () => {
   toast(ok ? 'Copied. Paste into a new Gmail or Outlook message.' : 'Could not copy: the browser blocked clipboard access.');
 };
 
+/* ---------- files (stored in the browser's file storage) ---------- */
+const DB = (() => {
+  let p;
+  const open = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open('pools-and-spa-files', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('files');
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (mode, fn) => { const db = await open(); return new Promise((res, rej) => { const t = db.transaction('files', mode), r = fn(t.objectStore('files')); t.oncomplete = () => res(r.result); t.onerror = () => rej(t.error); }); };
+  return {put: (id, v) => tx('readwrite', st => st.put(v, id)), get: id => tx('readonly', st => st.get(id)), del: id => tx('readwrite', st => st.delete(id)),
+    clear: () => tx('readwrite', st => st.clear()), keys: () => tx('readonly', st => st.getAllKeys())};
+})();
+const urlCache = new Map();
+async function fileUrl(id) {
+  if (urlCache.has(id)) return urlCache.get(id);
+  const f = await DB.get(id).catch(() => null); if (!f) return '';
+  const u = URL.createObjectURL(f.blob); urlCache.set(id, u); return u;
+}
+function hydrate(root) { root.querySelectorAll('img[data-file]').forEach(async img => { const u = await fileUrl(img.dataset.file); if (u) img.src = u; }); }
+async function shrink(file, max, q) {
+  try {
+    const bmp = await createImageBitmap(file, {imageOrientation: 'from-image'}), k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    return await new Promise(r => c.toBlob(b => r(b || file), 'image/jpeg', q));
+  } catch (e) { return file; }
+}
+async function savePhoto(file) {
+  const id = 'p' + uid() + uid(), full = await shrink(file, 1600, .82), thumb = await shrink(file, 420, .72);
+  await DB.put(id, {blob: full, name: file.name, type: full.type}); await DB.put(id + ':t', {blob: thumb, name: file.name, type: thumb.type});
+  return id;
+}
+function dropFiles(ids) {
+  ids.forEach(id => [id, id + ':t'].forEach(k => { DB.del(k).catch(() => {}); if (urlCache.has(k)) { URL.revokeObjectURL(urlCache.get(k)); urlCache.delete(k); } }));
+}
+const blobToData = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+async function asFiles(ids, base) {
+  const out = [];
+  for (const [i, id] of ids.entries()) {
+    const f = await DB.get(id).catch(() => null); if (!f) continue;
+    const ext = (f.type || '').includes('pdf') ? 'pdf' : (f.type || '').includes('png') ? 'png' : 'jpg';
+    out.push(new File([f.blob], ids.length > 1 ? `${base}-${i + 1}.${ext}` : (f.name && !base ? f.name : `${base}.${ext}`), {type: f.type || f.blob.type}));
+  }
+  return out;
+}
+
+/* ---------- customers ---------- */
+const CI = {
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  chat: '<path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.5A8 8 0 1 1 21 12z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  note: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+  file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
+  clip: '<path d="M21 11l-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/>',
+  share: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
+  back: '<path d="M15 18l-6-6 6-6"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>'};
+const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${CI[k]}</svg>`;
+const initials = n => (n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const hue = x => [...(x || '')].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 17);
+const digits = p => (p || '').replace(/[^\d+]/g, '');
+const firstName = j => (j.client || '').trim().split(/\s+/)[0];
+const money = n => n === '' || n == null || isNaN(n) ? '' : new Intl.NumberFormat(undefined, {style: 'currency', currency: 'USD', maximumFractionDigits: 0}).format(n);
+const QST = {draft: ['Draft', 'todo'], sent: ['Sent', 'next'], accepted: ['Accepted', 'done'], declined: ['Declined', 'declined']};
+const ago = t => { const d = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(t).setHours(0, 0, 0, 0)) / 864e5); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; };
+const fmtDay = t => new Date(t).toLocaleDateString(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
+const mapUrl = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a);
+const smsUrl = (ph, body) => `sms:${digits(ph)}${/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(body)}`;
+function lastContact(j) {
+  const c = (j.contacts || [])[0], l = state.log.find(x => x.address === j.address);
+  const best = [c && {at: c.at, how: c.mode === 'text' ? 'Texted' : 'Emailed'}, l && {at: l.at, how: 'Project update emailed'}].filter(Boolean).sort((a, b) => b.at - a.at)[0];
+  return best ? `${best.how} ${ago(best.at)}` : 'Not contacted from the app yet';
+}
+
+let custId = null;
+const shareCache = new Map();
+function openCustomer(id) {
+  custId = id;
+  try { history.pushState({cust: id}, ''); } catch (e) {}
+  if (view !== 'cust') show('cust'); else { renderCust(); scrollTo(0, 0); }
+}
+function custBack() { if (history.state && history.state.cust) history.back(); else { custId = null; renderCust(); scrollTo(0, 0); } }
+addEventListener('popstate', () => { if (view === 'cust' && custId) { custId = null; renderCust(); scrollTo(0, 0); } });
+function renderCust() { if (custId && job(custId)) renderCustDetail(); else { custId = null; renderCustList(); } }
+
+function renderCustList() {
+  $('#custList').hidden = false; $('#custDetail').hidden = true;
+  const q = $('#custSearch').value.trim().toLowerCase();
+  const list = [...state.jobs].sort((a, b) => (a.archived - b.archived) || (a.client || a.address).localeCompare(b.client || b.address))
+    .filter(j => !q || [j.client, j.address, j.email, j.phone].join(' ').toLowerCase().includes(q));
+  const ul = $('#custUl');
+  ul.innerHTML = list.map((j, i) => {
+    const total = j.tasks.length, pct = total ? Math.round(j.tasks.filter(t => t.status === 'done').length / total * 100) : 0;
+    return `<li data-cust="${j.id}" style="animation:rise .4s var(--ease) ${entering ? i * 40 : 0}ms backwards"><span class="av" style="--h:${hue(j.client || j.address)}">${esc(initials(j.client || j.address))}</span>
+      <div class="grow"><b class="ellip">${esc(j.client || 'No name yet')}</b><span class="sub ellip">${esc(j.address)}${j.phone ? '<span class="pnum"> · ' + esc(j.phone) + '</span>' : ''}</span></div>
+      <span class="pill">${j.archived ? 'Finished' : total ? pct + '% built' : 'New'}</span>
+      <div class="qa">${j.phone ? `<a class="ib" href="tel:${digits(j.phone)}" aria-label="Call" title="Call">${svg('phone')}</a><button class="ib" data-qa="text" aria-label="Text" title="Text">${svg('chat')}</button>` : ''}${j.email ? `<button class="ib" data-qa="email" aria-label="Email" title="Email">${svg('mail')}</button>` : ''}</div></li>`;
+  }).join('') || `<li class="none">${q ? 'No customers match your search.' : 'No customers yet.'}</li>`;
+}
+$('#custSearch').oninput = renderCustList;
+$('#newCust').onclick = () => openJob(null, true);
+$('#custUl').addEventListener('click', e => {
+  const li = e.target.closest('[data-cust]'); if (!li) return;
+  if (e.target.closest('a')) return;
+  const qa = e.target.closest('[data-qa]');
+  if (qa) return openMsg(li.dataset.cust, qa.dataset.qa);
+  openCustomer(li.dataset.cust);
+});
+
+function qRow(q) {
+  const st = QST[q.status] || QST.draft;
+  return `<li data-quote="${q.id}"><div class="qic${q.fileId ? ' has' : ''}">${svg(q.fileId ? 'clip' : 'file')}</div>
+    <div class="grow"><b class="ellip">${esc(q.title)}</b><span class="sub ellip">${fromYmd(q.date).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})}${q.fileName ? ' · ' + esc(q.fileName) : ''}</span></div>
+    <div class="qr"><b>${money(q.amount)}</b><span class="st ${st[1]}">${st[0]}</span></div></li>`;
+}
+function updCard(u, i) {
+  const n = u.photos.length;
+  return `<article class="upd" style="animation-delay:${entering ? i * 60 : 0}ms"><div class="upd-h"><b>${fmtDay(u.at)}</b><span class="sub">${new Date(u.at).toLocaleTimeString(undefined, {hour: 'numeric', minute: '2-digit'})}</span>${u.sentAt ? `<span class="sentmark">Sent ${ago(u.sentAt)}</span>` : ''}<button class="x" data-updel="${u.id}" title="Delete update" aria-label="Delete update">×</button></div>
+    <p>${esc(u.text)}</p>
+    ${n ? `<div class="pgrid">${u.photos.map((id, k) => `<button class="ph" data-photo="${u.id}:${k}" aria-label="Open photo ${k + 1}"><img data-file="${id}:t" alt=""></button>`).join('')}</div>` : ''}
+    <div class="upd-f"><button class="btn sm" data-ushare="${u.id}">${svg('share')}Send to client${n ? ` (${n} photo${n > 1 ? 's' : ''})` : ''}</button></div></article>`;
+}
+function renderCustDetail() {
+  $('#custList').hidden = true;
+  const box = $('#custDetail'); box.hidden = false;
+  const j = job(custId), name = j.client || 'No name yet';
+  const total = j.tasks.length, done = j.tasks.filter(t => t.status === 'done').length, pct = total ? Math.round(done / total * 100) : 0;
+  const nx = j.tasks.find(t => t.status === 'next') || j.tasks.find(t => t.status === 'todo');
+  const quotes = state.quotes.filter(q => q.jobId === j.id).sort((a, b) => b.date.localeCompare(a.date));
+  const ups = state.updates.filter(u => u.jobId === j.id).sort((a, b) => b.at - a.at);
+  const acc = quotes.filter(q => q.status === 'accepted').reduce((t, q) => t + (+q.amount || 0), 0);
+  const na = upcoming().find(a => a.jobId === j.id);
+  box.innerHTML = `<button class="back" data-c="back">${svg('back')}All customers</button>
+  <div class="panel" style="animation:rise .4s var(--ease)">
+    <div class="chead"><span class="av lg" style="--h:${hue(j.client || j.address)}">${esc(initials(j.client || j.address))}</span><div class="grow"><h1>${esc(name)}</h1><p class="sub">${esc(j.address)}${j.archived ? ' · Finished job' : ''}</p></div><button class="btn ghost sm" data-c="edit">Edit</button></div>
+    <div class="acts">
+      <a class="act${j.phone ? '' : ' off'}" href="tel:${digits(j.phone)}">${svg('phone')}Call</a>
+      <button class="act${j.phone ? '' : ' off'}" data-c="text">${svg('chat')}Text</button>
+      <button class="act${j.email ? '' : ' off'}" data-c="email">${svg('mail')}Email</button>
+      <a class="act" href="${mapUrl(j.address)}" target="_blank" rel="noopener">${svg('pin')}Directions</a>
+    </div>
+    <p class="lastc">${lastContact(j)}</p>
+  </div>
+  <div class="cgrid">
+    <div class="col">
+      <div class="panel" style="animation:rise .4s .05s var(--ease) backwards"><div class="panel-h"><h2>Contact</h2></div><div class="info">
+        <div>${svg('phone')}<span>${j.phone ? `<a href="tel:${digits(j.phone)}">${esc(j.phone)}</a><small>Mobile</small>` : '<a class="add" data-c="edit">Add a phone number</a>'}</span></div>
+        <div>${svg('mail')}<span>${j.email ? `<a href="mailto:${esc(j.email)}">${esc(j.email)}</a>` : '<a class="add" data-c="edit">Add an email address</a>'}</span></div>
+        <div>${svg('pin')}<span><a href="${mapUrl(j.address)}" target="_blank" rel="noopener">${esc(j.address)}</a></span></div>
+        ${j.notes ? `<div>${svg('note')}<span>${esc(j.notes)}<small>Internal note, never shown to the client</small></span></div>` : ''}
+      </div></div>
+      <div class="panel" style="animation:rise .4s .1s var(--ease) backwards"><div class="panel-h"><h2>Project</h2><a data-c="job">Open job ›</a></div>
+        <div class="jr-top"><b>${done} of ${total} steps done</b><span>${pct}%</span></div>${bar('c' + j.id, pct)}
+        <p class="sub" style="margin-top:8px">${nx ? 'Next: ' + esc(nx.title) : total ? 'All scheduled work complete' : 'No steps yet'}</p>
+        ${na ? `<ul class="list" style="margin-top:6px">${apptRow(na)}</ul>` : ''}
+        <button class="btn" style="width:100%;margin-top:12px" data-c="mail"${j.email ? '' : ' disabled'}>Email the designed project update</button>
+      </div>
+      <div class="panel" style="animation:rise .4s .15s var(--ease) backwards"><div class="panel-h"><h2>Quotes</h2>${acc ? `<span class="sub">Accepted <b style="color:var(--green)">${money(acc)}</b></span>` : ''}</div>
+        <ul class="list">${quotes.map(qRow).join('') || none('No quotes yet.')}</ul>
+        <button class="btn ghost" style="width:100%;margin-top:10px" data-c="quote">+ Add a quote</button>
+      </div>
+    </div>
+    <div class="panel" style="animation:rise .4s .1s var(--ease) backwards"><div class="panel-h"><h2>Project updates</h2><button class="btn sm" data-c="post">+ Post update</button></div>
+      ${ups.length ? `<div class="tl">${ups.map(updCard).join('')}</div>` : `<div class="empty">No updates yet. Post one with photos from the site, then send it to ${esc(firstName(j) || 'the client')}.</div>`}
+    </div>
+  </div>`;
+  hydrate(box); growBars(box);
+  ups.forEach(u => u.photos.length && asFiles(u.photos, 'pool-update').then(f => shareCache.set(u.id, f)));
+}
+$('#custDetail').addEventListener('click', e => {
+  const j = job(custId); if (!j) return;
+  const c = e.target.closest('[data-c]')?.dataset.c, q = e.target.closest('[data-quote]'), ph = e.target.closest('[data-photo]');
+  const us = e.target.closest('[data-ushare]'), ud = e.target.closest('[data-updel]'), ap = e.target.closest('[data-appt]');
+  if (c === 'back') return custBack();
+  if (c === 'edit') return openJob(j);
+  if (c === 'text' || c === 'email') return openMsg(j.id, c);
+  if (c === 'mail') return openMail(j.id);
+  if (c === 'job') { show('jobs'); return flashJob(j.id); }
+  if (c === 'quote') return openQuote(null);
+  if (c === 'post') return openUpd();
+  if (q) return openQuote(state.quotes.find(x => x.id === q.dataset.quote));
+  if (ph) { const [uid_, k] = ph.dataset.photo.split(':'); return openLb(state.updates.find(u => u.id === uid_).photos, +k); }
+  if (us) return shareUpdate(state.updates.find(u => u.id === us.dataset.ushare));
+  if (ap) return openAppt(state.appts.find(a => a.id === ap.dataset.appt));
+  if (ud) {
+    const u = state.updates.find(x => x.id === ud.dataset.updel);
+    if (!confirm(`Delete this update${u.photos.length ? ' and its photos' : ''}? This cannot be undone.`)) return;
+    state.updates = state.updates.filter(x => x !== u); dropFiles(u.photos); save(); renderCust(); toast('Update deleted');
+  }
+});
+
+/* ---------- text / email a customer ---------- */
+const MSG_TPL = {progress: 'Progress update', onway: 'On my way', remind: 'Appointment reminder', quote: 'Quote ready', custom: 'Blank'};
+let msg = {id: null, mode: 'text', tpl: 'progress'};
+function tplBody(k, j) {
+  const s = state.settings, me = s.senderName || s.company, hi = `Hi ${firstName(j) || 'there'},`;
+  const total = j.tasks.length, done = j.tasks.filter(t => t.status === 'done').length;
+  const nx = j.tasks.find(t => t.status === 'next') || j.tasks.find(t => t.status === 'todo');
+  const na = upcoming().find(a => a.jobId === j.id), lq = state.quotes.filter(q => q.jobId === j.id && q.status !== 'accepted').sort((a, b) => b.date.localeCompare(a.date))[0];
+  return {
+    progress: `${hi} a quick update on your pool at ${j.address}: ${done} of ${total} steps are done.${nx ? ` Next up: ${nx.title.toLowerCase()}.` : ''}${na ? ` We are scheduled for ${na.title.toLowerCase()} on ${fmtDay(fromYmd(na.date))}${na.time ? ' at ' + fmtClock(na.time) : ''}.` : ''}\n\n${me}`,
+    onway: `${hi} this is ${me} from ${s.company}. We are on our way to ${j.address} now.`,
+    remind: na ? `${hi} a reminder that ${na.title.toLowerCase()} is scheduled at ${j.address} on ${fmtDay(fromYmd(na.date))}${na.time ? ' at ' + fmtClock(na.time) : ''}. Reply if that time no longer works.\n\n${me}` : `${hi} just checking in about your next visit at ${j.address}. When works best for you?\n\n${me}`,
+    quote: lq ? `${hi} your quote for ${lq.title.toLowerCase()} (${money(lq.amount)}) is ready. Let me know if you have any questions or would like to go ahead.\n\n${me}` : `${hi} your quote is ready. Let me know if you have any questions.\n\n${me}`,
+    custom: `${hi} \n\n${me}`,
+  }[k];
+}
+function openMsg(id, mode, tpl, body, tip) {
+  const j = job(id); msg = {id, mode: mode === 'email' ? 'email' : 'text', tpl: tpl || 'progress'};
+  $('#msgTitle').textContent = 'Message ' + (j.client || j.address);
+  $('#msgSubj').value = 'Your pool project at ' + j.address;
+  $('#msgBody').value = body || tplBody(msg.tpl, j);
+  msgTipExtra = tip || '';
+  syncMsg(); $('#msgDlg').showModal();
+}
+let msgTipExtra = '';
+function syncMsg() {
+  const j = job(msg.id), text = msg.mode === 'text';
+  $('#msgSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.mode === msg.mode));
+  $('#msgChips').innerHTML = Object.entries(MSG_TPL).map(([k, v]) => `<button type="button" data-tpl="${k}" class="${k === msg.tpl ? 'on' : ''}">${v}</button>`).join('');
+  $('#msgSubjWrap').hidden = text;
+  const to = text ? j.phone : j.email;
+  $('#msgTo').textContent = to ? 'To ' + to : `No ${text ? 'phone number' : 'email address'} saved for this customer yet.`;
+  $('#msgGo').disabled = !to;
+  $('#msgGo').textContent = text ? 'Open Messages' : touch() ? 'Open mail app' : 'Open in Gmail';
+  $('#msgDesigned').hidden = text || !j.email;
+  const tip = msgTipExtra || (text && !touch() ? 'Texting opens the Messages app on a phone. On a computer, tap Copy and send it from your phone.' : '');
+  $('#msgTip').hidden = !tip; $('#msgTip').textContent = tip;
+}
+$('#msgSeg').onclick = e => { const b = e.target.closest('[data-mode]'); if (b) { msg.mode = b.dataset.mode; syncMsg(); } };
+$('#msgChips').onclick = e => { const b = e.target.closest('[data-tpl]'); if (!b) return; msg.tpl = b.dataset.tpl; $('#msgBody').value = tplBody(msg.tpl, job(msg.id)); syncMsg(); };
+$('#msgDesigned').onclick = () => { const id = msg.id; closeDlg($('#msgDlg')); setTimeout(() => openMail(id), 170); };
+$('#msgCopy').onclick = async () => {
+  const t = $('#msgBody').value; let ok = false;
+  try { await navigator.clipboard.writeText(t); ok = true; } catch (e) { const a = $('#msgBody'); a.select(); try { ok = document.execCommand('copy'); } catch (e2) {} }
+  toast(ok ? 'Message copied' : 'Could not copy: select the text and copy it by hand');
+};
+$('#msgGo').onclick = () => {
+  const j = job(msg.id), body = $('#msgBody').value.trim(), enc = encodeURIComponent;
+  if (!body) return toast('Write a message first');
+  (j.contacts = j.contacts || []).unshift({at: Date.now(), mode: msg.mode, body}); j.contacts.length = Math.min(j.contacts.length, 20); save();
+  if (msg.mode === 'text') location.href = smsUrl(j.phone, body);
+  else if (touch()) location.href = `mailto:${j.email}?subject=${enc($('#msgSubj').value)}&body=${enc(body)}`;
+  else window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${enc(j.email)}&su=${enc($('#msgSubj').value)}&body=${enc(body)}`, '_blank');
+  closeDlg($('#msgDlg')); if (view === 'cust') renderCust();
+};
+
+/* ---------- send a photo update ---------- */
+async function shareUpdate(u) {
+  const j = job(u.jobId), s = state.settings;
+  const text = `Hi ${firstName(j) || 'there'}, here is the latest from your pool at ${j.address}:\n\n${u.text}\n\n${s.senderName || s.company}`;
+  const files = shareCache.get(u.id) || (u.photos.length ? await asFiles(u.photos, 'pool-update') : []);
+  const mark = () => { u.sentAt = Date.now(); save(); if (view === 'cust') renderCust(); };
+  if (navigator.share && touch() && (!files.length || (navigator.canShare && navigator.canShare({files})))) {
+    try { await navigator.share(files.length ? {text, files} : {text}); mark(); toast('Update sent'); }
+    catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing: ' + e.message); }
+    return;
+  }
+  files.forEach((f, i) => setTimeout(() => { const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }, i * 250));
+  mark();
+  openMsg(j.id, j.email ? 'email' : 'text', 'custom', text, files.length ? `${files.length} photo${files.length > 1 ? 's were' : ' was'} saved to your Downloads folder. Attach ${files.length > 1 ? 'them' : 'it'} to the message before sending.` : '');
+}
+
+/* ---------- post an update ---------- */
+let picked = [];
+function openUpd() {
+  const j = job(custId); picked.forEach(p => URL.revokeObjectURL(p.url)); picked = [];
+  $('#updForm').reset(); $('#updFor').textContent = (j.client || 'Customer') + ' · ' + j.address; drawPicks();
+  const b = $('#updSave'); b.disabled = false; b.classList.remove('loading'); b.textContent = 'Post update';
+  $('#updDlg').showModal();
+}
+function drawPicks() { $('#updPicks').innerHTML = picked.map((p, i) => `<div class="pick"><img src="${p.url}" alt=""><button type="button" data-unpick="${i}" aria-label="Remove photo">×</button></div>`).join(''); }
+$('#updFiles').onchange = e => { [...e.target.files].forEach(f => picked.push({file: f, url: URL.createObjectURL(f)})); e.target.value = ''; drawPicks(); };
+$('#updPicks').onclick = e => { const b = e.target.closest('[data-unpick]'); if (!b) return; URL.revokeObjectURL(picked[+b.dataset.unpick].url); picked.splice(+b.dataset.unpick, 1); drawPicks(); };
+$('#updForm').onsubmit = async e => {
+  e.preventDefault();
+  const text = e.target.text.value.trim(), b = $('#updSave'); if (!text) return;
+  b.disabled = true; b.classList.add('loading'); b.textContent = picked.length ? 'Saving photos' : 'Posting';
+  try {
+    const photos = []; for (const p of picked) photos.push(await savePhoto(p.file));
+    state.updates.push({id: uid(), jobId: custId, at: Date.now(), text, photos}); save();
+    picked.forEach(p => URL.revokeObjectURL(p.url)); picked = [];
+    closeDlg($('#updDlg')); renderCust(); toast('Update posted. Tap “Send to client” to share it.');
+  } catch (err) { toast('Could not save the photos: ' + (err.message || err)); b.disabled = false; b.classList.remove('loading'); b.textContent = 'Post update'; }
+};
+
+/* ---------- quotes ---------- */
+let editQ = null, qFile = null, qRemove = false, qShareFile = null;
+function openQuote(q) {
+  editQ = q || null; qFile = null; qRemove = false; qShareFile = null;
+  const f = $('#quoteForm');
+  $('#quoteTitle').textContent = q ? 'Quote' : 'New quote';
+  f.title.value = q?.title || ''; f.amount.value = q?.amount ?? ''; f.status.value = q?.status || 'draft';
+  f.date.value = q?.date || ymd(new Date()); f.notes.value = q?.notes || '';
+  $('#qDelete').hidden = !q; drawQFile();
+  $('#quoteDlg').showModal();
+}
+async function drawQFile() {
+  const has = editQ && editQ.fileId && !qRemove, box = $('#qFileBox'), sh = $('#qShare');
+  sh.hidden = true;
+  if (qFile) box.innerHTML = `<div class="filebox">${svg('clip')}<span class="grow">${esc(qFile.name)}</span><button class="linkbtn" type="button" id="qClear">Remove</button></div>`;
+  else if (has) {
+    box.innerHTML = `<div class="filebox">${svg('clip')}<span class="grow">${esc(editQ.fileName)}</span><a id="qView" target="_blank" rel="noopener">Open</a><button class="linkbtn" type="button" id="qClear">Remove</button></div>`;
+    const u = await fileUrl(editQ.fileId); if (u && $('#qView')) $('#qView').href = u;
+    if (touch() && navigator.canShare) { const fs = await asFiles([editQ.fileId], ''); if (fs.length && navigator.canShare({files: fs})) { qShareFile = fs[0]; sh.hidden = false; } }
+  } else box.innerHTML = `<label class="drop">${svg('clip')}Attach the quote<small>A PDF or a photo of it</small><input type="file" id="qInput" accept="application/pdf,image/*"></label>`;
+  const inp = $('#qInput'); if (inp) inp.onchange = e => { const f = e.target.files[0]; if (!f) return; if (f.size > 25e6) return toast('That file is over 25 MB'); qFile = f; drawQFile(); };
+  const cl = $('#qClear'); if (cl) cl.onclick = () => { if (qFile) qFile = null; else qRemove = true; drawQFile(); };
+}
+$('#qShare').onclick = async () => {
+  const j = job(custId);
+  try { await navigator.share({files: [qShareFile], text: `Hi ${firstName(j) || 'there'}, here is your quote for ${editQ.title.toLowerCase()}.`}); if (editQ.status === 'draft') { editQ.status = 'sent'; save(); renderCust(); } }
+  catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing'); }
+};
+$('#quoteForm').onsubmit = async e => {
+  e.preventDefault();
+  const f = e.target, d = {title: f.title.value.trim(), amount: f.amount.value === '' ? '' : +f.amount.value, status: f.status.value, date: f.date.value, notes: f.notes.value.trim()};
+  const q = editQ || {id: uid(), jobId: custId, fileId: '', fileName: '', fileType: ''};
+  Object.assign(q, d);
+  try {
+    if ((qRemove || qFile) && q.fileId) { dropFiles([q.fileId]); q.fileId = q.fileName = q.fileType = ''; }
+    if (qFile) { const id = 'q' + uid() + uid(); await DB.put(id, {blob: qFile, name: qFile.name, type: qFile.type}); Object.assign(q, {fileId: id, fileName: qFile.name, fileType: qFile.type}); }
+  } catch (err) { return toast('Could not save the file: ' + (err.message || err)); }
+  if (!editQ) state.quotes.push(q);
+  save(); closeDlg($('#quoteDlg')); renderCust(); toast('Quote saved');
+};
+$('#qDelete').onclick = () => {
+  if (!editQ || !confirm(`Delete the quote "${editQ.title}"? This cannot be undone.`)) return;
+  if (editQ.fileId) dropFiles([editQ.fileId]);
+  state.quotes = state.quotes.filter(q => q !== editQ); save(); closeDlg($('#quoteDlg')); renderCust();
+};
+
+/* ---------- photo viewer ---------- */
+let lb = {ids: [], i: 0};
+function openLb(ids, i) { lb = {ids, i}; drawLb(); $('#lb').showModal(); }
+async function drawLb() {
+  $('#lbCount').textContent = `${lb.i + 1} of ${lb.ids.length}`;
+  $('#lbPrev').disabled = lb.i === 0; $('#lbNext').disabled = lb.i === lb.ids.length - 1;
+  const img = $('#lbImg'); img.src = await fileUrl(lb.ids[lb.i] + ':t'); img.src = await fileUrl(lb.ids[lb.i]) || img.src;
+}
+$('#lbPrev').onclick = () => { if (lb.i > 0) { lb.i--; drawLb(); } };
+$('#lbNext').onclick = () => { if (lb.i < lb.ids.length - 1) { lb.i++; drawLb(); } };
+$('#lb').addEventListener('keydown', e => { if (e.key === 'ArrowLeft') $('#lbPrev').click(); if (e.key === 'ArrowRight') $('#lbNext').click(); });
+let lbX = null;
+$('#lb').addEventListener('touchstart', e => { lbX = e.touches[0].clientX; }, {passive: true});
+$('#lb').addEventListener('touchend', e => { if (lbX == null) return; const dx = e.changedTouches[0].clientX - lbX; if (Math.abs(dx) > 50) (dx < 0 ? $('#lbNext') : $('#lbPrev')).click(); lbX = null; });
+
 /* ---------- log + settings ---------- */
 function renderLog() {
   $('#log').innerHTML = state.log.map((l, i) => `<div class="mrow" data-log="${i}"><div class="dblock" style="background:var(--green-bg);color:var(--green)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON.mail}</svg></div><div class="grow"><b class="ellip">${esc(l.subject)}</b><span class="sub ellip">${esc(l.to)} · ${esc(l.address)} · ${fmtTime(l.at)}</span></div><span class="sub"><a>View</a></span></div>`).join('')
@@ -1117,8 +1640,6 @@ $('#settings').addEventListener('input', e => {
   state.settings[el.name] = el.type === 'checkbox' ? el.checked : el.name === 'template' ? el.value : el.value.trim();
   save(); renderChrome();
 });
-$('#helpOk').onclick = () => { state.settings.hideHelp = true; save(); $('#help').hidden = true; };
-$('#helpShow').onclick = () => { state.settings.hideHelp = false; save(); show('dash'); };
 $('#xlBtn').onclick = () => { $('#xlText').value = ''; $('#xlDlg').showModal(); };
 function importSheet(text) {
   let cur = null, nj = 0, nt = 0;
@@ -1140,9 +1661,11 @@ $('#xlGo').onclick = () => {
   const [nj, nt] = importSheet($('#xlText').value);
   save(); closeDlg($('#xlDlg')); toast(`Imported ${nj} new ${nj === 1 ? 'job' : 'jobs'} and ${nt} new ${nt === 1 ? 'task' : 'tasks'}`);
 };
-$('#exportBtn').onclick = () => {
+$('#exportBtn').onclick = async () => {
+  const files = {};
+  try { for (const id of await DB.keys()) { const f = await DB.get(id); if (f) files[id] = {name: f.name, type: f.type, data: await blobToData(f.blob)}; } } catch (e) {}
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'}));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({...state, files})], {type: 'application/json'}));
   a.download = 'pools-and-spa-backup.json'; a.click(); URL.revokeObjectURL(a.href);
 };
 $('#importBtn').onclick = () => $('#importFile').click();
@@ -1152,30 +1675,34 @@ $('#importFile').onchange = async e => {
     const d = JSON.parse(await file.text());
     if (!Array.isArray(d.jobs)) throw 0;
     if (confirm('Replace everything in this app with the backup?')) {
-      state = {settings: {...DEFAULTS, ...d.settings}, jobs: d.jobs, appts: d.appts || [], log: d.log || []};
-      save(); renderChrome(); renderSettings(); toast('Backup imported');
+      state = {settings: {...DEFAULTS, ...d.settings}, jobs: d.jobs, appts: d.appts || [], log: d.log || [], quotes: d.quotes || [], updates: d.updates || [], custSeeded: true, logSeeded: true};
+      await DB.clear().catch(() => {}); urlCache.clear();
+      for (const [id, f] of Object.entries(d.files || {})) await DB.put(id, {name: f.name, type: f.type, blob: await (await fetch(f.data)).blob()});
+      custId = null; save(); renderChrome(); renderSettings(); toast('Backup imported');
     }
   } catch (err) { toast('That file is not a backup from this app'); }
   e.target.value = '';
 };
 $('#resetBtn').onclick = () => {
-  if (!confirm('Replace all jobs, appointments and sent emails with the sample data? Settings are kept.')) return;
-  Object.assign(state, seed(), {log: []}); seedLog(); save(); toast('Sample data restored');
+  if (!confirm('Replace all jobs, customers, quotes, photos, appointments and sent emails with the sample data? Settings are kept.')) return;
+  Object.assign(state, seed(), {log: [], quotes: [], updates: []}); seedCustomers(); seedLog(); DB.clear().catch(() => {}); urlCache.clear(); custId = null; save(); toast('Sample data restored');
 };
 
 /* ---------- views ---------- */
-const RENDER = {dash: renderDash, jobs: renderJobs, cal: () => renderCal(), log: renderLog, settings: renderSettings};
+const RENDER = {dash: renderDash, jobs: renderJobs, cust: renderCust, cal: () => renderCal(), log: renderLog, settings: renderSettings};
 function refresh() { RENDER[view](); }
 function show(v) {
   view = v; entering = true; pctMem.clear();
   for (const k in RENDER) $('#view-' + k).hidden = k !== v;
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.view === v));
+  $('#gear').classList.toggle('on', v === 'settings');
   scrollTo(0, 0); refresh(); entering = false;
 }
 const NAV_IC = {dash: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-  jobs: ICON.tasks, cal: ICON.cal, log: ICON.mail, settings: '<path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/>'};
+  jobs: ICON.tasks, cust: CI.users, cal: ICON.cal, log: ICON.mail, settings: '<path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/>'};
 document.querySelectorAll('#nav button').forEach(b => b.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${NAV_IC[b.dataset.view]}</svg>`));
-$('#nav').onclick = e => { const b = e.target.closest('button'); if (b) show(b.dataset.view); };
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.view === 'cust') custId = null; show(b.dataset.view); };
+$('#gear').onclick = () => show('settings');
 if (touch()) $('#mGmail').textContent = 'Open mail app';
 
 load(); renderChrome(); show('dash');
