@@ -519,7 +519,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
     <button data-view="jobs">Jobs</button>
     <button data-view="cust">Customers</button>
     <button data-view="cal">Calendar</button>
-    <button data-view="log">Emails</button>
+    <button data-view="log">Sent</button>
     <button data-view="settings">Settings</button>
   </nav>
 </div></header>
@@ -583,7 +583,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
 
   <!-- LOG -->
   <section id="view-log" hidden>
-    <div class="head"><div><h1>Client emails</h1><p>Every update sent from this app. Open one to see exactly what the client received.</p></div></div>
+    <div class="head"><div><h1>Sent messages</h1><p>Every text and email sent from this app. Open one to see exactly what was sent.</p></div></div>
     <div class="panel"><div class="scroll" id="log"></div></div>
   </section>
 
@@ -609,7 +609,6 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
         <p class="sub" style="margin-bottom:16px">Small things the app does for you so the schedule and the client stay in step.</p>
         <div class="form">
           <label class="check wide"><input type="checkbox" name="autoNext"><span>Pick the next step automatically<small>When a task is marked complete and nothing is flagged “Next up”, the first open task becomes next.</small></span></label>
-          <label class="check wide"><input type="checkbox" name="gmailAfterSend"><span>Open a Gmail draft after I press Send<small>Opens a draft with the client and subject filled in, and copies the designed email so you can paste it in. On a phone it opens your mail app instead.</small></span></label>
           <label class="f wide">Standard checklist for new jobs <span class="hint">(one step per line)</span><textarea class="in" name="template" rows="7"></textarea></label>
         </div>
       </div>
@@ -686,7 +685,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
       <label class="check"><input type="checkbox" id="mDone" checked><span>Include completed work</span></label>
       <div class="summary" id="mSummary"></div>
     </div>
-    <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="button" id="mSend">Preview and send</button></div>
+    <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="button" id="mSend">Send email</button></div>
   </div>
   <div id="mSent" hidden>
     <div class="sent-h">
@@ -694,8 +693,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
       <div class="grow"><b id="sentSubject"></b><p class="sub" id="sentMeta"></p></div>
     </div>
     <div class="prev"><iframe id="mPrev" title="Sent email"></iframe></div>
-    <div class="how" id="sentNote"></div>
-    <div class="dlg-f"><button class="btn ghost" type="button" data-close>Done</button><button class="btn ghost" type="button" id="mCopy">Copy email</button><button class="btn" type="button" id="mGmail">Open in Gmail</button></div>
+    <div class="dlg-f"><small class="demo" id="sentNote">Preview only. No text or email service is connected yet, so nothing was delivered.</small><button class="btn" type="button" data-close>Done</button></div>
   </div>
 </dialog>
 
@@ -704,14 +702,16 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
   <div class="dlg-h"><h2 id="msgTitle">Message</h2><button class="x" type="button" data-close>×</button></div>
   <div class="dlg-b">
     <div class="seg" id="msgSeg"><button type="button" data-mode="text">Text message</button><button type="button" data-mode="email">Email</button></div>
+    <label class="f" id="msgCrewWrap" hidden>Send to<input class="in" id="msgCrewTo" placeholder="Crew member's name or phone" list="crews2"></label><datalist id="crews2"></datalist>
     <p class="sub" id="msgTo"></p>
-    <div><span class="f">Start from</span><div class="chips" id="msgChips"></div></div>
+    <div id="msgChipWrap"><span class="f">Start from</span><div class="chips" id="msgChips"></div></div>
     <label class="f" id="msgSubjWrap">Subject<input class="in" id="msgSubj"></label>
     <label class="f">Message<textarea class="in" id="msgBody" rows="6"></textarea></label>
+    <div id="msgAtt"></div>
     <p class="tip" id="msgTip" hidden></p>
     <button class="linkbtn" type="button" id="msgDesigned">Send the full designed project update instead ›</button>
   </div>
-  <div class="dlg-f"><button class="btn ghost" type="button" id="msgCopy">Copy</button><button class="btn" type="button" id="msgGo">Open Messages</button></div>
+  <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="button" id="msgGo">Send text</button></div>
 </dialog>
 
 <!-- quote dialog -->
@@ -729,7 +729,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
   </div>
   <div class="dlg-f">
     <button class="btn danger" type="button" id="qDelete" style="margin-right:auto">Delete</button>
-    <button class="btn ghost" type="button" id="qShare" hidden>Send file</button>
+    <button class="btn ghost" type="button" id="qShare" hidden>Send to client</button>
     <button class="btn" type="submit">Save</button>
   </div>
 </form></dialog>
@@ -822,7 +822,7 @@ const isPhone = () => matchMedia('(max-width:640px)').matches, touch = () => mat
 const LABEL = {todo: 'To do', next: 'Next up', done: 'Complete'};
 const TYPES = {visit: ['Site visit', '#0b7285'], delivery: ['Delivery', '#b45309'], inspection: ['Inspection', '#7c3aed'], install: ['Install', '#15803d'], meeting: ['Client meeting', '#2563eb']};
 const DEFAULTS = {company: 'Pools & Spa Co.', senderName: '', replyTo: '', phone: '', accent: '#1b2a4e',
-  signoff: 'Thank you for building with us,', showCrew: false, autoEmail: true, autoNext: true, gmailAfterSend: true, hideDone: false,
+  signoff: 'Thank you for building with us,', showCrew: false, autoEmail: true, autoNext: true, hideDone: false,
   template: ['Permitting', 'Layout and dig', 'Steel and rebar', 'Long plumb', 'Electrical connections', 'Gas line', 'Shotcrete', 'Backfill trenches',
     'Tile and coping install', 'Concrete pad and decking', 'Set equipment', 'Build fence', 'Plaster', 'Start-up and pool school'].join('\n')};
 
@@ -1023,7 +1023,7 @@ function renderDash() {
     off += len; return s;
   }).join('');
 
-  const mails = state.log.slice(0, 4).map((l, i) => `<li data-log="${i}"><div class="dblock" style="background:var(--green-bg);color:var(--green)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON.mail}</svg></div><div class="grow"><b class="ellip">${esc(l.subject)}</b><span class="sub ellip">${esc(l.to)} · ${fmtTime(l.at)}</span></div></li>`).join('') || none('No emails sent yet.');
+  const mails = state.log.slice(0, 4).map((l, i) => { const x = logInfo(l); return `<li data-log="${i}"><div class="dblock" style="background:${x.bg};color:${x.fg}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg></div><div class="grow"><b class="ellip">${esc(x.title)}</b><span class="sub ellip">${esc(x.sub)}</span></div></li>`; }).join('') || none('Nothing sent yet.');
 
   const att = attention();
   const attRows = att.map(a => `<li data-att="${a.act}:${a.id}"><i class="tdot" style="background:${a.c}"></i><div class="grow"><b class="ellip">${esc(a.t)}</b><span class="sub ellip">${esc(a.s)}</span></div><button class="btn ghost sm">${a.label}</button></li>`).join('') || none('You are all caught up.');
@@ -1038,7 +1038,7 @@ function renderDash() {
         <div class="legend"><div><i class="tdot" style="background:#15803d"></i>Complete<b>${c.done}</b></div><div><i class="tdot" style="background:#f59e0b"></i>Next up<b>${c.next}</b></div><div><i class="tdot" style="background:#cbd5e1"></i>To do<b>${c.todo}</b></div></div></div></div>
       <div class="panel" style="--i:5"><div class="panel-h"><h2>Upcoming appointments</h2><a data-view="cal">Calendar</a></div><ul class="list">${up.slice(0, 4).map(apptRow).join('') || none('Nothing scheduled.')}</ul></div>
       <div class="panel" style="--i:6"><div class="panel-h"><h2>Materials coming</h2></div><ul class="list">${matsDue().slice(0, 5).map(matAgendaRow).join('') || none('Nothing waiting to be ordered or delivered.')}</ul></div>
-      <div class="panel" style="--i:7"><div class="panel-h"><h2>Recent client emails</h2><a data-view="log">All emails</a></div><ul class="list">${mails}</ul></div>
+      <div class="panel" style="--i:7"><div class="panel-h"><h2>Recently sent</h2><a data-view="log">All sent</a></div><ul class="list">${mails}</ul></div>
     </div>`;
   d.querySelectorAll('.enter-col').forEach(el => el.classList.toggle('enter', entering));
   growBars(d);
@@ -1336,7 +1336,7 @@ let mailJob = null, shown = null;
 function mailState(sent) {
   $('#mCompose').hidden = sent; $('#mSent').hidden = !sent;
   $('#mailDlg').classList.toggle('big', sent);
-  $('#mailTitle').textContent = sent ? 'Email ready to send' : 'Email update to client';
+  $('#mailTitle').textContent = sent ? (shown && shown.kind === 'text' ? 'Text sent' : 'Email sent') : 'Email update to client';
 }
 function openMail(id) {
   mailJob = job(id);
@@ -1347,57 +1347,58 @@ function openMail(id) {
   $('#mNote').value = '';
   $('#mSummary').innerHTML = [[b.fresh.length, 'new'], [b.next.length, 'up next'], [b.todo.length, 'still to come'], [b.done.length, 'completed']]
     .filter(p => p[0]).map(p => `<span><b>${p[0]}</b> ${p[1]}</span>`).join('') || 'No tasks on this job yet.';
-  btn.disabled = false; btn.classList.remove('loading'); btn.textContent = 'Preview and send';
+  btn.disabled = false; btn.classList.remove('loading'); btn.textContent = 'Send email';
   mailState(false);
   if (!$('#mailDlg').open) $('#mailDlg').showModal();
 }
-const GMAIL_HINT = () => touch() ? 'To send it: 1. Tap “Open mail app”.  2. Press and hold in the message and tap Paste.  3. Tap Send.'
-  : 'To send it: 1. Click “Open in Gmail”.  2. Click in the message and press Ctrl+V to paste.  3. Click Send.';
-function copySync(html) {
-  const d = document.createElement('div'); d.contentEditable = 'true'; d.style.cssText = 'position:fixed;left:-9999px;top:0;width:640px;background:#fff';
-  d.innerHTML = html; $('#mailDlg').appendChild(d);
-  const r = document.createRange(); r.selectNodeContents(d); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
-  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
-  sel.removeAllRanges(); d.remove(); return ok;
+const clip = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M21 11l-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/></svg>';
+function textDoc(e, urls) {
+  const name = e.toName || e.to || 'Crew', when = new Date(e.at).toLocaleString(undefined, {weekday: 'short', hour: 'numeric', minute: '2-digit'});
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;background:#eef1f5;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;padding:20px 12px">
+<div style="max-width:390px;margin:0 auto;background:#fff;border-radius:26px;box-shadow:0 12px 30px -14px rgba(15,23,42,.35);overflow:hidden;border:1px solid #e5e9f0">
+<div style="text-align:center;padding:16px 12px 12px;border-bottom:1px solid #eef1f5;background:#f8fafc">
+<div style="width:46px;height:46px;border-radius:50%;background:#94a3b8;color:#fff;font-weight:700;font-size:17px;line-height:46px;margin:0 auto">${esc(initials(name))}</div>
+<div style="font-size:13.5px;font-weight:600;color:#0f172a;margin-top:5px">${esc(name)}</div>${e.toName && e.to ? `<div style="font-size:11.5px;color:#64748b">${esc(e.to)}</div>` : ''}</div>
+<div style="padding:14px 14px 20px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-height:220px">
+<div style="align-self:center;font-size:11px;color:#94a3b8;margin-bottom:6px">Text Message · ${when}</div>
+${urls.map(u => `<img src="${u}" alt="" style="max-width:72%;border-radius:18px;display:block">`).join('')}
+${e.attach ? `<div style="background:#e9e9eb;border-radius:18px;padding:10px 14px;font-size:14px;color:#0f172a;max-width:78%">${clip}${esc(e.attach)}</div>` : ''}
+<div style="background:#0b84ff;color:#fff;border-radius:18px 18px 4px 18px;padding:9px 13px;max-width:82%;white-space:pre-wrap;font-size:15px;line-height:1.38;overflow-wrap:anywhere">${esc(e.body)}</div>
+</div></div></body></html>`;
 }
-function openGmail(entry) {
-  const copied = copySync(entry.html), enc = encodeURIComponent;
-  if (touch()) {
-    location.href = `mailto:${entry.to}?subject=${enc(entry.subject)}${copied ? '' : '&body=' + enc(entry.text)}`;
-    return $('#sentNote').textContent = copied ? 'Your mail app is open. Press and hold in the message, tap Paste, then tap Send.' : 'Your mail app is open with a plain version of the email. Check it, then tap Send.';
-  }
-  const w = window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${enc(entry.to)}&su=${enc(entry.subject)}${copied ? '' : '&body=' + enc(entry.text)}`, '_blank');
-  $('#sentNote').textContent = !w ? 'Your browser blocked the Gmail tab. Click “Open in Gmail”.'
-    : copied ? 'Gmail is open in a new tab. Click in the message, press Ctrl+V to paste, then click Send.'
-    : 'Gmail is open in a new tab with a plain version of the email. Check it, then click Send.';
+function plainEmailHtml(e, urls) {
+  const s = state.settings, a = s.accent || DEFAULTS.accent, font = "font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;";
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5f8;"><tr><td align="center" style="padding:28px 12px;">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e5e9f0;">
+<tr><td style="background:${a};border-bottom:4px solid #b22234;padding:20px 32px;${font}font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#ffffff;">${esc(s.company)}</td></tr>
+<tr><td style="padding:26px 32px 18px;${font}font-size:16px;line-height:25px;color:#0f172a;">${esc(e.body).replace(/\n/g, '<br>')}</td></tr>
+${urls.length ? `<tr><td style="padding:0 32px 14px;">${urls.map(u => `<img src="${u}" alt="" width="262" style="width:48%;max-width:262px;border-radius:8px;margin:0 1% 8px 0;vertical-align:top;">`).join('')}</td></tr>` : ''}
+${e.attach ? `<tr><td style="padding:0 32px 22px;${font}font-size:14px;color:#0f172a;"><span style="display:inline-block;border:1px solid #e5e9f0;border-radius:8px;padding:9px 13px;">${clip}${esc(e.attach)}</span></td></tr>` : ''}
+<tr><td style="background:#f8fafc;border-top:1px solid #e5e9f0;padding:14px 32px;${font}font-size:12px;line-height:18px;color:#94a3b8;">${esc(s.company)}${s.phone ? ' &nbsp;&middot;&nbsp; ' + esc(s.phone) : ''}</td></tr>
+</table></td></tr></table>`;
 }
-function showSent(entry, gmail) {
+async function showSent(entry) {
   if (!entry) return;
-  shown = entry; $('#sentNote').textContent = GMAIL_HINT(); $('#mGmail').textContent = touch() ? 'Open mail app' : 'Open in Gmail';
-  $('#mPrev').srcdoc = emailDoc(entry.html);
-  $('#sentSubject').textContent = entry.subject;
-  $('#sentMeta').textContent = `To ${entry.to} · ${fmtTime(entry.at)}`;
+  shown = entry;
+  const urls = (await Promise.all((entry.photos || []).map(id => fileUrl(id)))).filter(Boolean);
+  $('#mPrev').srcdoc = entry.html ? emailDoc(entry.html) : entry.kind === 'text' ? textDoc(entry, urls) : emailDoc(plainEmailHtml(entry, urls));
+  $('#sentSubject').textContent = entry.subject || (entry.crew ? 'Job sheet to ' + (entry.to || 'the crew') : 'Text to ' + (entry.toName || entry.to));
+  $('#sentMeta').textContent = `To ${entry.toName && !entry.crew ? entry.toName + ' · ' : ''}${entry.to || 'Crew'} · ${fmtTime(entry.at)}`;
   mailState(true);
   if (!$('#mailDlg').open) $('#mailDlg').showModal();
-  if (gmail) openGmail(entry);
 }
-$('#mGmail').onclick = () => openGmail(shown);
 $('#mSend').onclick = () => {
   const to = $('#mTo').value.trim(), btn = $('#mSend'), j = mailJob;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { toast('Enter a valid email address in “To”'); return $('#mTo').focus(); }
   const o = {note: $('#mNote').value.trim(), includeDone: $('#mDone').checked, includeCal: $('#mCal').checked};
-  const entry = {at: Date.now(), address: j.address, to, subject: $('#mSubject').value.trim() || `Project update: ${j.address}`, html: emailBody(j, o), text: emailText(j, o)};
-  btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Preparing';
+  const entry = {at: Date.now(), kind: 'email', address: j.address, toName: j.client || '', to, subject: $('#mSubject').value.trim() || `Project update: ${j.address}`, html: emailBody(j, o), text: emailText(j, o)};
+  btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Sending';
   setTimeout(() => {
     j.tasks.forEach(t => t.notified = true); j.lastEmailAt = entry.at;
     state.log.unshift(entry); state.log.length = Math.min(state.log.length, 50);
-    save(); refresh(); showSent(entry, state.settings.gmailAfterSend);
+    save(); refresh(); showSent(entry);
   }, 700);
-};
-$('#mCopy').onclick = async () => {
-  let ok = copySync(shown.html);
-  if (!ok) try { await navigator.clipboard.write([new ClipboardItem({'text/html': new Blob([shown.html], {type: 'text/html'}), 'text/plain': new Blob([shown.text], {type: 'text/plain'})})]); ok = true; } catch (e) {}
-  toast(ok ? 'Copied. Paste into a new Gmail or Outlook message.' : 'Could not copy: the browser blocked clipboard access.');
 };
 
 /* ---------- files (stored in the browser's file storage) ---------- */
@@ -1436,15 +1437,6 @@ function dropFiles(ids) {
   ids.forEach(id => [id, id + ':t'].forEach(k => { DB.del(k).catch(() => {}); if (urlCache.has(k)) { URL.revokeObjectURL(urlCache.get(k)); urlCache.delete(k); } }));
 }
 const blobToData = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
-async function asFiles(ids, base) {
-  const out = [];
-  for (const [i, id] of ids.entries()) {
-    const f = await DB.get(id).catch(() => null); if (!f) continue;
-    const ext = (f.type || '').includes('pdf') ? 'pdf' : (f.type || '').includes('png') ? 'png' : 'jpg';
-    out.push(new File([f.blob], ids.length > 1 ? `${base}-${i + 1}.${ext}` : (f.name && !base ? f.name : `${base}.${ext}`), {type: f.type || f.blob.type}));
-  }
-  return out;
-}
 
 /* ---------- customers ---------- */
 const CI = {
@@ -1468,15 +1460,14 @@ const QST = {draft: ['Draft', 'todo'], sent: ['Sent', 'next'], accepted: ['Accep
 const ago = t => { const d = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(t).setHours(0, 0, 0, 0)) / 864e5); return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d + ' days ago'; };
 const fmtDay = t => new Date(t).toLocaleDateString(undefined, {weekday: 'short', month: 'short', day: 'numeric'});
 const mapUrl = a => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a);
-const smsUrl = (ph, body) => `sms:${digits(ph)}${/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(body)}`;
 function lastContact(j) {
-  const c = (j.contacts || [])[0], l = state.log.find(x => x.address === j.address);
-  const best = [c && {at: c.at, how: c.mode === 'text' ? 'Texted' : 'Emailed'}, l && {at: l.at, how: 'Project update emailed'}].filter(Boolean).sort((a, b) => b.at - a.at)[0];
+  const l = state.log.find(x => x.address === j.address && !x.crew), c = (j.contacts || [])[0];
+  const best = [l && {at: l.at, how: l.html ? 'Project update emailed' : l.kind === 'text' ? 'Texted' : 'Emailed'}, c && {at: c.at, how: c.mode === 'text' ? 'Texted' : 'Emailed'}]
+    .filter(Boolean).sort((a, b) => b.at - a.at)[0];
   return best ? `${best.how} ${ago(best.at)}` : 'Not contacted from the app yet';
 }
 
 let custId = null;
-const shareCache = new Map();
 function openCustomer(id) {
   custId = id;
   try { history.pushState({cust: id}, ''); } catch (e) {}
@@ -1576,7 +1567,6 @@ function renderCustDetail() {
     </div>
   </div>`;
   hydrate(box); growBars(box);
-  ups.forEach(u => u.photos.length && asFiles(u.photos, 'pool-update').then(f => shareCache.set(u.id, f)));
 }
 $('#custDetail').addEventListener('click', e => {
   const j = job(custId); if (!j) return;
@@ -1623,60 +1613,55 @@ function tplBody(k, j) {
     custom: `${hi} \n\n${me}`,
   }[k];
 }
-function openMsg(id, mode, tpl, body, tip) {
-  const j = job(id); msg = {id, mode: mode === 'email' ? 'email' : 'text', tpl: tpl || 'progress'};
-  $('#msgTitle').textContent = 'Message ' + (j.client || j.address);
-  $('#msgSubj').value = 'Your pool project at ' + j.address;
+function openMsg(id, mode, tpl, body, opts) {
+  const j = job(id); opts = opts || {};
+  msg = {id, mode: mode === 'email' ? 'email' : 'text', tpl: tpl || (body ? '' : 'progress'), photos: opts.photos || [], attach: opts.attach || '', updId: opts.updId || '', quoteId: opts.quoteId || '', crew: !!opts.crew};
+  $('#msgTitle').textContent = msg.crew ? 'Send job sheet to the crew' : 'Message ' + (j.client || j.address);
+  $('#msgSubj').value = opts.subject || 'Your pool project at ' + j.address;
   $('#msgBody').value = body || tplBody(msg.tpl, j);
-  msgTipExtra = tip || '';
+  $('#msgCrewTo').value = '';
+  $('#crews2').innerHTML = [...new Set(state.jobs.flatMap(x => x.tasks.map(t => t.who)).filter(Boolean))].sort().map(c => `<option value="${esc(c)}">`).join('');
+  const att = $('#msgAtt');
+  att.innerHTML = (msg.photos.length ? `<div class="picks">${msg.photos.map(p => `<div class="pick"><img data-file="${p}:t" alt=""></div>`).join('')}</div>` : '')
+    + (msg.attach ? `<div class="filebox">${svg('clip')}<span class="grow">${esc(msg.attach)}</span><span class="sub">Attached</span></div>` : '');
+  att.hidden = !att.innerHTML; hydrate(att);
   syncMsg(); $('#msgDlg').showModal();
 }
-let msgTipExtra = '';
 function syncMsg() {
-  const j = job(msg.id), text = msg.mode === 'text';
+  const j = job(msg.id), text = msg.mode === 'text', crew = msg.crew;
+  $('#msgSeg').hidden = crew; $('#msgChipWrap').hidden = crew || !!msg.updId; $('#msgCrewWrap').hidden = !crew;
   $('#msgSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.mode === msg.mode));
   $('#msgChips').innerHTML = Object.entries(MSG_TPL).map(([k, v]) => `<button type="button" data-tpl="${k}" class="${k === msg.tpl ? 'on' : ''}">${v}</button>`).join('');
   $('#msgSubjWrap').hidden = text;
-  const to = text ? j.phone : j.email;
-  $('#msgTo').textContent = to ? 'To ' + to : `No ${text ? 'phone number' : 'email address'} saved for this customer yet.`;
+  const to = crew ? 'ok' : text ? j.phone : j.email;
+  $('#msgTo').hidden = crew;
+  $('#msgTo').textContent = to ? 'To ' + to : `No ${text ? 'phone number' : 'email address'} saved for this customer yet. Add one with Edit on their page.`;
   $('#msgGo').disabled = !to;
-  $('#msgGo').textContent = text ? 'Open Messages' : touch() ? 'Open mail app' : 'Open in Gmail';
-  $('#msgDesigned').hidden = text || !j.email;
-  const tip = msgTipExtra || (text && !touch() ? 'Texting opens the Messages app on a phone. On a computer, tap Copy and send it from your phone.' : '');
-  $('#msgTip').hidden = !tip; $('#msgTip').textContent = tip;
+  $('#msgGo').textContent = text ? 'Send text' : 'Send email';
+  $('#msgDesigned').hidden = crew || text || !j.email;
+  $('#msgTip').hidden = true;
 }
 $('#msgSeg').onclick = e => { const b = e.target.closest('[data-mode]'); if (b) { msg.mode = b.dataset.mode; syncMsg(); } };
 $('#msgChips').onclick = e => { const b = e.target.closest('[data-tpl]'); if (!b) return; msg.tpl = b.dataset.tpl; $('#msgBody').value = tplBody(msg.tpl, job(msg.id)); syncMsg(); };
 $('#msgDesigned').onclick = () => { const id = msg.id; closeDlg($('#msgDlg')); setTimeout(() => openMail(id), 170); };
-$('#msgCopy').onclick = async () => {
-  const t = $('#msgBody').value; let ok = false;
-  try { await navigator.clipboard.writeText(t); ok = true; } catch (e) { const a = $('#msgBody'); a.select(); try { ok = document.execCommand('copy'); } catch (e2) {} }
-  toast(ok ? 'Message copied' : 'Could not copy: select the text and copy it by hand');
-};
 $('#msgGo').onclick = () => {
-  const j = job(msg.id), body = $('#msgBody').value.trim(), enc = encodeURIComponent;
+  const j = job(msg.id), body = $('#msgBody').value.trim(), text = msg.mode === 'text';
   if (!body) return toast('Write a message first');
-  (j.contacts = j.contacts || []).unshift({at: Date.now(), mode: msg.mode, body}); j.contacts.length = Math.min(j.contacts.length, 20); save();
-  if (msg.mode === 'text') location.href = smsUrl(j.phone, body);
-  else if (touch()) location.href = `mailto:${j.email}?subject=${enc($('#msgSubj').value)}&body=${enc(body)}`;
-  else window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${enc(j.email)}&su=${enc($('#msgSubj').value)}&body=${enc(body)}`, '_blank');
-  closeDlg($('#msgDlg')); if (view === 'cust') renderCust();
+  const entry = {at: Date.now(), kind: msg.mode, address: j.address, subject: text ? '' : ($('#msgSubj').value.trim() || 'Your pool project at ' + j.address),
+    body, photos: msg.photos, attach: msg.attach, crew: msg.crew};
+  if (msg.crew) { entry.to = $('#msgCrewTo').value.trim() || 'Crew'; entry.toName = ''; }
+  else { entry.to = text ? j.phone : j.email; entry.toName = j.client || ''; }
+  if (msg.updId) { const u = state.updates.find(x => x.id === msg.updId); if (u) u.sentAt = entry.at; }
+  if (msg.quoteId) { const q = state.quotes.find(x => x.id === msg.quoteId); if (q && q.status === 'draft') q.status = 'sent'; }
+  state.log.unshift(entry); state.log.length = Math.min(state.log.length, 100); save();
+  closeDlg($('#msgDlg')); refresh(); setTimeout(() => showSent(entry), 170);
 };
 
 /* ---------- send a photo update ---------- */
-async function shareUpdate(u) {
-  const j = job(u.jobId), s = state.settings;
-  const text = `Hi ${firstName(j) || 'there'}, here is the latest from your pool at ${j.address}:\n\n${u.text}\n\n${s.senderName || s.company}`;
-  const files = shareCache.get(u.id) || (u.photos.length ? await asFiles(u.photos, 'pool-update') : []);
-  const mark = () => { u.sentAt = Date.now(); save(); if (view === 'cust') renderCust(); };
-  if (navigator.share && touch() && (!files.length || (navigator.canShare && navigator.canShare({files})))) {
-    try { await navigator.share(files.length ? {text, files} : {text}); mark(); toast('Update sent'); }
-    catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing: ' + e.message); }
-    return;
-  }
-  files.forEach((f, i) => setTimeout(() => { const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }, i * 250));
-  mark();
-  openMsg(j.id, j.email ? 'email' : 'text', 'custom', text, files.length ? `${files.length} photo${files.length > 1 ? 's were' : ' was'} saved to your Downloads folder. Attach ${files.length > 1 ? 'them' : 'it'} to the message before sending.` : '');
+function shareUpdate(u) {
+  const j = job(u.jobId), st = state.settings;
+  const text = `Hi ${firstName(j) || 'there'}, here is the latest from your pool at ${j.address}:\n\n${u.text}\n\n${st.senderName || st.company}`;
+  openMsg(j.id, j.phone ? 'text' : 'email', '', text, {photos: u.photos, updId: u.id, subject: 'Pool update: ' + j.address});
 }
 
 /* ---------- post an update ---------- */
@@ -1715,20 +1700,19 @@ function openQuote(q) {
 }
 async function drawQFile() {
   const has = editQ && editQ.fileId && !qRemove, box = $('#qFileBox'), sh = $('#qShare');
-  sh.hidden = true;
+  sh.hidden = !editQ;
   if (qFile) box.innerHTML = `<div class="filebox">${svg('clip')}<span class="grow">${esc(qFile.name)}</span><button class="linkbtn" type="button" id="qClear">Remove</button></div>`;
   else if (has) {
     box.innerHTML = `<div class="filebox">${svg('clip')}<span class="grow">${esc(editQ.fileName)}</span><a id="qView" target="_blank" rel="noopener">Open</a><button class="linkbtn" type="button" id="qClear">Remove</button></div>`;
     const u = await fileUrl(editQ.fileId); if (u && $('#qView')) $('#qView').href = u;
-    if (touch() && navigator.canShare) { const fs = await asFiles([editQ.fileId], ''); if (fs.length && navigator.canShare({files: fs})) { qShareFile = fs[0]; sh.hidden = false; } }
+
   } else box.innerHTML = `<label class="drop">${svg('clip')}Attach the quote<small>A PDF or a photo of it</small><input type="file" id="qInput" accept="application/pdf,image/*"></label>`;
   const inp = $('#qInput'); if (inp) inp.onchange = e => { const f = e.target.files[0]; if (!f) return; if (f.size > 25e6) return toast('That file is over 25 MB'); qFile = f; drawQFile(); };
   const cl = $('#qClear'); if (cl) cl.onclick = () => { if (qFile) qFile = null; else qRemove = true; drawQFile(); };
 }
-$('#qShare').onclick = async () => {
-  const j = job(custId);
-  try { await navigator.share({files: [qShareFile], text: `Hi ${firstName(j) || 'there'}, here is your quote for ${editQ.title.toLowerCase()}.`}); if (editQ.status === 'draft') { editQ.status = 'sent'; save(); renderCust(); } }
-  catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing'); }
+$('#qShare').onclick = () => {
+  const q = editQ, j = job(q.jobId); closeDlg($('#quoteDlg'));
+  setTimeout(() => openMsg(j.id, j.email ? 'email' : 'text', 'quote', '', {attach: q.fileName, quoteId: q.id, subject: 'Your quote: ' + q.title}), 170);
 };
 $('#quoteForm').onsubmit = async e => {
   e.preventDefault();
@@ -1916,12 +1900,7 @@ function crewSheet(j) {
   if (mats.length) L.push('', 'MATERIALS ARRIVING', ...mats.map(m => `- ${m.name}${m.qty ? ' (' + m.qty + ')' : ''}${m.needBy ? ', ' + fmtDay(fromYmd(m.needBy)) : ''}`));
   return L.join('\n');
 }
-async function sendCrew(j) {
-  const text = crewSheet(j);
-  if (navigator.share && touch()) { try { await navigator.share({title: 'Job sheet: ' + j.address, text}); } catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing'); } return; }
-  let ok = false; try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {}
-  toast(ok ? 'Crew sheet copied. Paste it into a text or email to the crew.' : 'Could not copy the crew sheet');
-}
+function sendCrew(j) { openMsg(j.id, 'text', '', crewSheet(j), {crew: true}); }
 
 /* ---------- photo viewer ---------- */
 let lb = {ids: [], i: 0};
@@ -1939,9 +1918,15 @@ $('#lb').addEventListener('touchstart', e => { lbX = e.touches[0].clientX; }, {p
 $('#lb').addEventListener('touchend', e => { if (lbX == null) return; const dx = e.changedTouches[0].clientX - lbX; if (Math.abs(dx) > 50) (dx < 0 ? $('#lbNext') : $('#lbPrev')).click(); lbX = null; });
 
 /* ---------- log + settings ---------- */
+function logInfo(l) {
+  const text = l.kind === 'text';
+  return {icon: text ? CI.chat : ICON.mail, bg: l.crew ? '#e0f2fe' : text ? '#dbeafe' : 'var(--green-bg)', fg: l.crew ? '#0369a1' : text ? '#1d4ed8' : 'var(--green)',
+    title: l.subject || (l.crew ? 'Job sheet to ' + (l.to || 'the crew') : 'Text: ' + (l.body || '').split('\n')[0]),
+    sub: [l.crew ? 'Crew' : (l.toName || l.to), l.address, fmtTime(l.at)].filter(Boolean).join(' · ')};
+}
 function renderLog() {
-  $('#log').innerHTML = state.log.map((l, i) => `<div class="mrow" data-log="${i}"><div class="dblock" style="background:var(--green-bg);color:var(--green)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON.mail}</svg></div><div class="grow"><b class="ellip">${esc(l.subject)}</b><span class="sub ellip">${esc(l.to)} · ${esc(l.address)} · ${fmtTime(l.at)}</span></div><span class="sub"><a>View</a></span></div>`).join('')
-    || '<div class="empty">Nothing sent yet. Use “Email update” on a job.</div>';
+  $('#log').innerHTML = state.log.map((l, i) => { const x = logInfo(l); return `<div class="mrow" data-log="${i}"><div class="dblock" style="background:${x.bg};color:${x.fg}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg></div><div class="grow"><b class="ellip">${esc(x.title)}</b><span class="sub ellip">${esc(x.sub)}</span></div><span class="sub"><a>View</a></span></div>`; }).join('')
+    || '<div class="empty">Nothing sent yet. Text or email a customer from their page.</div>';
 }
 $('#log').addEventListener('click', e => { const r = e.target.closest('[data-log]'); if (r) showSent(state.log[+r.dataset.log]); });
 
@@ -2016,7 +2001,6 @@ const NAV_IC = {dash: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x=
 document.querySelectorAll('#nav button').forEach(b => b.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${NAV_IC[b.dataset.view]}</svg>`));
 $('#nav').onclick = e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.view === 'cust') custId = null; show(b.dataset.view); };
 $('#gear').onclick = () => show('settings');
-if (touch()) $('#mGmail').textContent = 'Open mail app';
 
 load(); renderChrome(); show('dash');
 </script>
