@@ -472,6 +472,41 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
   dialog#lb{margin:auto;border-radius:14px;width:calc(100vw - 16px)}
   dialog#lb[open]{animation:dlgIn .25s var(--ease)}
 }
+
+/* ---------- job tabs, notes, materials ---------- */
+.ctabs{display:flex;gap:2px;padding:0 12px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.ctabs button{border:0;background:none;padding:11px 10px;font-weight:600;font-size:14.5px;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap;transition:color .2s,border-color .2s}
+.ctabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+.cn{font-size:11.5px;background:var(--grey-bg);color:#475569;border-radius:99px;padding:1px 7px;font-weight:700}
+.cn.warn{background:#fee2e2;color:#b91c1c}
+.tabpane{animation:fade .25s ease}
+.strip{margin:0 18px 14px;padding:11px 13px;border-radius:12px;background:#fffbeb;border:1px solid #fde68a;font-size:14.5px;display:flex;gap:10px;align-items:flex-start;color:#713f12}
+.strip svg{width:20px;height:20px;flex-shrink:0;color:#d97706;margin-top:1px}
+.strip ul{margin:4px 0 0;padding-left:18px}
+.strip li{margin:2px 0}
+.mat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s}
+.mat:hover,.nrow:hover{background:#f8fafc}
+.mat .mst{grid-row:1/3;grid-column:2}
+.mat .sub{grid-column:1}
+.mst{border:0;border-radius:99px;padding:7px 13px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .25s,color .25s,transform .12s}
+.mst:active{transform:scale(.92)}
+.mst.order{background:#fee2e2;color:#b91c1c}
+.mst.ordered{background:var(--amber-bg);color:var(--amber)}
+.mst.delivered{background:var(--green-bg);color:var(--green)}
+.mst.pulse{animation:pulse .45s var(--ease)}
+.late{color:#b91c1c;font-weight:700}
+.nrow{display:flex;gap:10px;padding:12px 18px;border-bottom:1px solid var(--line);cursor:pointer;align-items:flex-start;transition:background .15s}
+.ntag{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:99px;flex-shrink:0;margin-top:2px;white-space:nowrap}
+.ntag.req{background:#ede9fe;color:#6d28d9}
+.ntag.crew{background:#e0f2fe;color:#0369a1}
+.imp{color:#b45309}
+.tabadd{display:flex;gap:8px;padding:12px 18px 14px;flex-wrap:wrap;background:#fbfcfe}
+.panel .mat,.panel .nrow{padding-left:0;padding-right:0}
+.panel .mat:hover,.panel .nrow:hover{background:none}
+.panel .tabadd{padding:12px 0 0;background:none}
+.hintbox{font-size:13.5px;padding:9px 12px;border-radius:10px;background:#f0f9ff;color:#0c4a6e;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip.mchip{border-left-style:dashed}
+@media (max-width:640px){.tabadd .btn{flex:1 1 auto}.mat{padding:12px 14px}.nrow{padding:12px 14px}.strip{margin:0 14px 14px}}
 </style>
 </head>
 <body>
@@ -629,6 +664,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
     </div>
     <label class="f">Notes<textarea class="in" name="notes" rows="2"></textarea></label>
     <p class="sub" id="apptLink" hidden></p>
+    <div class="strip" id="apptCrew" hidden style="margin:0"></div>
   </div>
   <div class="dlg-f">
     <button class="btn danger" type="button" id="apptDelete" style="margin-right:auto">Delete</button>
@@ -709,6 +745,48 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
   </div>
   <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="submit" id="updSave">Post update</button></div>
 </form></dialog>
+
+<!-- note dialog -->
+<dialog id="noteDlg"><form id="noteForm">
+  <div class="dlg-h"><h2 id="noteTitle">Note</h2><button class="x" type="button" data-close>×</button></div>
+  <div class="dlg-b">
+    <p class="sub" id="noteFor"></p>
+    <div class="seg" id="noteSeg"><button type="button" data-kind="req">Customer wants</button><button type="button" data-kind="crew">Crew instruction</button></div>
+    <label class="f">Details<textarea class="in" name="text" rows="3" required></textarea></label>
+    <label class="check"><input type="checkbox" name="important"><span>Important: show it at the top of the job<small>For gate codes, pets, safety and anything the crew must not miss.</small></span></label>
+  </div>
+  <div class="dlg-f">
+    <button class="btn danger" type="button" id="noteDelete" style="margin-right:auto">Delete</button>
+    <button class="btn ghost" type="button" data-close>Cancel</button>
+    <button class="btn" type="submit">Save</button>
+  </div>
+</form></dialog>
+
+<!-- material dialog -->
+<dialog id="matDlg"><form id="matForm">
+  <div class="dlg-h"><h2 id="matTitle">Material</h2><button class="x" type="button" data-close>×</button></div>
+  <div class="dlg-b">
+    <p class="sub" id="matFor"></p>
+    <label class="f">Product<input class="in" name="name" required placeholder="Travertine coping"></label>
+    <div class="two">
+      <label class="f">Quantity<input class="in" name="qty" placeholder="64 linear ft"></label>
+      <label class="f">Supplier<input class="in" name="supplier" placeholder="Stone yard" list="suppliers"></label>
+    </div>
+    <label class="f">Needed for which step <span class="hint">(optional)</span><select class="in" name="taskId"></select></label>
+    <div class="two">
+      <label class="f">Needed on site by<input class="in" name="needBy" type="date"></label>
+      <label class="f">Status<select class="in" name="status"><option value="order">To order</option><option value="ordered">Ordered</option><option value="delivered">On site</option></select></label>
+    </div>
+    <div class="hintbox" id="matHint" hidden></div>
+    <label class="f">Notes<textarea class="in" name="notes" rows="2" placeholder="Order number, colour, delivery instructions…"></textarea></label>
+  </div>
+  <div class="dlg-f">
+    <button class="btn danger" type="button" id="matDelete" style="margin-right:auto">Delete</button>
+    <button class="btn ghost" type="button" data-close>Cancel</button>
+    <button class="btn" type="submit">Save</button>
+  </div>
+</form></dialog>
+<datalist id="suppliers"></datalist>
 
 <!-- photo viewer -->
 <dialog id="lb">
@@ -795,6 +873,30 @@ function seedCustomers() {
   state.custSeeded = true;
 }
 
+function seedSite() {
+  const info = {
+    '1028 Concord': {notes: [['crew', 'Gate code 4412. Use the side gate to the left of the garage.', 1], ['crew', 'Two dogs in the backyard. Keep the gate shut at all times.', 1],
+        ['req', 'Plaster colour: Pebble Tec Midnight Blue.'], ['req', 'Waterfall lights on the spa spillway (add-on quote).'], ['crew', 'No work before 8 AM; the neighbours have complained about noise.']],
+      mats: [['Travertine coping', '64 linear ft', 'Stone yard', 1, 'ordered', 'Drop off tile'], ['Glass waterline tile', '12 boxes', 'Tile supply', 1, 'ordered', 'Drop off tile'],
+        ['LED waterfall lights', '2', 'Pool supply', 9, 'order', 'Tile and coping install'], ['Plaster: Pebble Tec Midnight Blue', '1 pool', 'Pebble Tec', 24, 'order', ''], ['Pump, filter and heater', '1 set', 'Pool supply', -10, 'delivered', 'Order equipment']]},
+    '17548 Julees Walk Lane': {notes: [['crew', 'Gas meter is on the north side. Call Garrick before digging near it.', 1], ['req', 'Fence: 5 ft black aluminium with a self-closing gate.']],
+      mats: [['Aluminium fence panels', '18 panels + gate', 'Fence supply', 2, 'ordered', 'Build fence'], ['Gas pipe and fittings', '1 kit', 'Plumbing supply', -8, 'delivered', 'Gas line']]},
+    '11421 Fountaingrove Drive': {notes: [['crew', 'Park on the street; the driveway was just sealed.', 1], ['req', 'Hide the equipment pad behind the side fence.']],
+      mats: [['Backfill sand', '20 yards', 'Sand and gravel', -4, 'delivered', 'Get sand delivered'], ['Pool equipment package', '1 set', 'Pool supply', 12, 'ordered', '']]},
+    '5117 Grassy Creek': {notes: [['req', 'Spa upgrade under review: hold the spa plumbing until the quote is signed.', 1], ['crew', 'Steel inspection is booked. Leave the rebar uncovered.']],
+      mats: [['#4 rebar', '2 tons', 'Steel supply', -6, 'delivered', 'Dig rebar'], ['Shotcrete', '28 yards', 'Concrete supply', 16, 'order', '']]},
+  };
+  state.jobs.forEach(j => {
+    const x = info[j.address]; if (!x) return;
+    j.notesList = x.notes.map(([kind, text, imp]) => ({id: uid(), kind, text, important: !!imp}));
+    x.mats.forEach(([name, qty, supplier, d, status, step]) => {
+      const t = step && j.tasks.find(t => t.title === step);
+      state.materials.push({id: uid(), jobId: j.id, name, qty, supplier, needBy: ymd(addDays(d)), status, taskId: t ? t.id : '', notes: ''});
+    });
+  });
+  state.siteSeeded = true;
+}
+
 let state, view = 'dash', entering = false;
 const pctMem = new Map();
 function load() {
@@ -803,6 +905,8 @@ function load() {
   state.settings = {...DEFAULTS, ...state.settings};
   state.log = state.log || []; state.appts = state.appts || []; state.quotes = state.quotes || []; state.updates = state.updates || [];
   if (!state.custSeeded) { seedCustomers(); save(); }
+  state.materials = state.materials || [];
+  if (!state.siteSeeded) { seedSite(); save(); }
   if (!state.logSeeded && !state.log.length) { seedLog(); save(); }
 }
 function seedLog() {
@@ -840,6 +944,13 @@ const tplLines = () => (state.settings.template || '').split('\n').map(x => x.tr
 function attention() {
   const out = [], today = ymd(new Date());
   state.appts.filter(a => a.date === today).sort(byWhen).forEach(a => out.push({c: '#7c3aed', t: 'Today: ' + a.title, s: fmtClock(a.time) + (job(a.jobId) ? ' · ' + job(a.jobId).address : ''), act: 'appt', id: a.id, label: 'Open'}));
+  const soon = ymd(addDays(14));
+  [...state.materials].sort((a, b) => (a.needBy || '9').localeCompare(b.needBy || '9')).forEach(m => {
+    const j = job(m.jobId); if (!j || j.archived || !m.needBy) return;
+    const when = fmtDay(fromYmd(m.needBy));
+    if (m.status === 'order' && m.needBy <= soon) out.push({c: '#b91c1c', t: `Order: ${m.name}`, s: `${j.address} · ${m.needBy < today ? 'was needed' : 'needed on site'} ${when}`, act: 'matorder', id: m.id, label: 'Mark ordered'});
+    else if (m.status === 'ordered' && m.needBy <= today) out.push({c: '#b45309', t: `Check delivery: ${m.name}`, s: `${j.address} · due ${m.needBy === today ? 'today' : when}`, act: 'matdel', id: m.id, label: 'Mark on site'});
+  });
   state.jobs.filter(j => !j.archived).forEach(j => {
     const b = buckets(j), open = b.next.length + b.todo.length;
     if (b.fresh.length || b.justDone.length) out.push({c: '#b22234', t: j.address + ': client update due', s: [b.fresh.length && b.fresh.length + ' new', b.justDone.length && b.justDone.length + ' completed'].filter(Boolean).join(', ') + ' since the last email', act: 'mail', id: j.id, label: 'Email update'});
@@ -926,7 +1037,8 @@ function renderDash() {
         <div class="donut"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="#eef1f5"/>${segs}</svg><div><b>${pctDone}%</b><span>complete</span></div></div>
         <div class="legend"><div><i class="tdot" style="background:#15803d"></i>Complete<b>${c.done}</b></div><div><i class="tdot" style="background:#f59e0b"></i>Next up<b>${c.next}</b></div><div><i class="tdot" style="background:#cbd5e1"></i>To do<b>${c.todo}</b></div></div></div></div>
       <div class="panel" style="--i:5"><div class="panel-h"><h2>Upcoming appointments</h2><a data-view="cal">Calendar</a></div><ul class="list">${up.slice(0, 4).map(apptRow).join('') || none('Nothing scheduled.')}</ul></div>
-      <div class="panel" style="--i:6"><div class="panel-h"><h2>Recent client emails</h2><a data-view="log">All emails</a></div><ul class="list">${mails}</ul></div>
+      <div class="panel" style="--i:6"><div class="panel-h"><h2>Materials coming</h2></div><ul class="list">${matsDue().slice(0, 5).map(matAgendaRow).join('') || none('Nothing waiting to be ordered or delivered.')}</ul></div>
+      <div class="panel" style="--i:7"><div class="panel-h"><h2>Recent client emails</h2><a data-view="log">All emails</a></div><ul class="list">${mails}</ul></div>
     </div>`;
   d.querySelectorAll('.enter-col').forEach(el => el.classList.toggle('enter', entering));
   growBars(d);
@@ -937,6 +1049,7 @@ $('#view-dash').addEventListener('click', e => {
   if (q('[data-view]')) return show(q('[data-view]').dataset.view);
   if (q('[data-att]')) {
     const [act, id] = q('[data-att]').dataset.att.split(':'), j = job(id);
+    if (act === 'matorder' || act === 'matdel') { setMat(state.materials.find(m => m.id === id), act === 'matorder' ? 'ordered' : 'delivered'); return renderDash(); }
     if (act === 'appt') return openAppt(state.appts.find(a => a.id === id));
     if (act === 'mail') return openMail(id);
     if (act === 'edit') return openJob(j);
@@ -948,6 +1061,7 @@ $('#view-dash').addEventListener('click', e => {
     const [jid, tid] = q('[data-done]').dataset.done.split(':'), j = job(jid);
     setStatus(j, j.tasks.find(x => x.id === tid), 'done'); return renderDash();
   }
+  if (q('[data-mat]')) return openMat(state.materials.find(m => m.id === q('[data-mat]').dataset.mat));
   if (q('[data-appt]')) return openAppt(state.appts.find(a => a.id === q('[data-appt]').dataset.appt));
   if (q('[data-log]')) return showSent(state.log[+q('[data-log]').dataset.log]);
   if (q('[data-go]')) {
@@ -985,13 +1099,15 @@ function jobCard(j, i) {
     <div class="prog">${bar('j' + j.id, pct)}<span>${done} of ${total} complete</span></div>
     <div class="body"><div>
     <div class="card-actions"><button class="btn ghost sm" data-act="cust">Customer</button><button class="btn ghost sm" data-act="edit">Edit job</button><button class="btn sm" data-act="mail">Email update${fresh ? `<span class="dot">${fresh} new</span>` : ''}</button></div>
-    <ul class="tasks">${hide ? `<li class="hid">${done} completed ${done === 1 ? 'task' : 'tasks'} hidden</li>` : ''}${rows.map(taskRow).join('') || (hide ? '' : '<li class="empty">No work scheduled yet.</li>')}</ul>
+    ${strip(j)}
+    ${cardTabs(j)}
+    ${(jobTab.get(j.id) || 'steps') === 'steps' ? `<div class="tabpane"><ul class="tasks">${hide ? `<li class="hid">${done} completed ${done === 1 ? 'task' : 'tasks'} hidden</li>` : ''}${rows.map(taskRow).join('') || (hide ? '' : '<li class="empty">No work scheduled yet.</li>')}</ul>
     <form class="add">
       <input class="in t-new" name="title" placeholder="Type the next step here…" required>
       <input class="in" name="who" placeholder="Who?" list="crews">
       <button class="btn">Add</button>
       <label class="check"><input type="checkbox" name="notify"${state.settings.autoEmail ? ' checked' : ''}> Email the client about this</label>
-    </form>
+    </form></div>` : jobTab.get(j.id) === 'mats' ? matsPane(j) : notesPane(j)}
     </div></div>
   </article>`;
 }
@@ -999,7 +1115,7 @@ const jobsEl = $('#jobs');
 function renderJobs() {
   const q = $('#search').value.trim().toLowerCase(), arch = $('#show').value === 'archived';
   const list = state.jobs.filter(j => !!j.archived === arch).filter(j => !q ||
-    [j.address, j.client, j.email, j.phone, ...j.tasks.flatMap(t => [t.title, t.who])].join(' ').toLowerCase().includes(q));
+    [j.address, j.client, j.email, j.phone, ...j.tasks.flatMap(t => [t.title, t.who]), ...(j.notesList || []).map(n => n.text), ...state.materials.filter(m => m.jobId === j.id).map(m => m.name + ' ' + m.supplier)].join(' ').toLowerCase().includes(q));
   const crews = [...new Set(state.jobs.flatMap(j => j.tasks.map(t => t.who)).filter(Boolean))].sort();
   jobsEl.classList.toggle('enter', entering);
   jobsEl.innerHTML = `<datalist id="crews">${crews.map(c => `<option value="${esc(c)}">`).join('')}</datalist>` +
@@ -1082,10 +1198,10 @@ $('#jobForm').onsubmit = e => {
   save(); closeDlg($('#jobDlg')); refresh();
 };
 $('#jobDelete').onclick = () => {
-  if (!editing || !confirm(`Delete "${editing.address}" with all its steps, quotes and photo updates? This cannot be undone.`)) return;
+  if (!editing || !confirm(`Delete "${editing.address}" with all its steps, materials, notes, quotes and photo updates? This cannot be undone.`)) return;
   state.jobs = state.jobs.filter(j => j !== editing);
   const gone = state.updates.filter(u => u.jobId === editing.id).flatMap(u => u.photos).concat(state.quotes.filter(q => q.jobId === editing.id && q.fileId).map(q => q.fileId));
-  state.updates = state.updates.filter(u => u.jobId !== editing.id); state.quotes = state.quotes.filter(q => q.jobId !== editing.id);
+  state.updates = state.updates.filter(u => u.jobId !== editing.id); state.quotes = state.quotes.filter(q => q.jobId !== editing.id); state.materials = state.materials.filter(m => m.jobId !== editing.id);
   dropFiles(gone); if (custId === editing.id) custId = null;
   state.appts.forEach(a => { if (a.jobId === editing.id) a.jobId = ''; });
   save(); closeDlg($('#jobDlg')); refresh();
@@ -1102,12 +1218,14 @@ function renderCal(dir) {
   const first = new Date(cal.y, cal.m, 1), start = first.getDay(), days = new Date(cal.y, cal.m + 1, 0).getDate();
   const cells = Math.ceil((start + days) / 7) * 7, today = ymd(new Date()), by = {};
   state.appts.forEach(a => (by[a.date] = by[a.date] || []).push(a));
+  const mby = {}; state.materials.filter(m => m.needBy && m.status !== 'delivered' && job(m.jobId)).forEach(m => (mby[m.needBy] = mby[m.needBy] || []).push(m));
   let h = '';
   for (let i = 0; i < cells; i++) {
-    const d = new Date(cal.y, cal.m, i - start + 1), k = ymd(d), list = (by[k] || []).sort(byWhen);
+    const d = new Date(cal.y, cal.m, i - start + 1), k = ymd(d), list = (by[k] || []).sort(byWhen), ml = mby[k] || [], room = Math.max(0, 3 - list.length);
     h += `<div class="day${d.getMonth() !== cal.m ? ' out' : ''}${k === today ? ' today' : ''}${k === calSel ? ' sel' : ''}" data-date="${k}"><span class="dn">${d.getDate()}</span>${
       list.slice(0, 3).map(a => `<button class="chip${k < today ? ' past' : ''}" data-appt="${a.id}" style="--c:${(TYPES[a.type] || TYPES.visit)[1]}" title="${esc(a.title)}">${a.time ? fmtClock(a.time).replace(':00', '').replace(' ', '').toLowerCase() + ' ' : ''}${esc(a.title)}</button>`).join('')
-    }${list.length > 3 ? `<span class="more">+${list.length - 3} more</span>` : ''}</div>`;
+    }${ml.slice(0, room).map(m => `<button class="chip mchip${k < today ? ' past' : ''}" data-mat="${m.id}" style="--c:${m.status === 'order' ? '#b91c1c' : '#b45309'}" title="${esc(m.name)} arrives">Arrives: ${esc(m.name)}</button>`).join('')
+    }${list.length + ml.length > 3 ? `<span class="more">+${list.length + ml.length - 3} more</span>` : ''}</div>`;
   }
   $('#calTitle').textContent = first.toLocaleDateString(undefined, {month: 'long', year: 'numeric'});
   const g = $('#calGrid');
@@ -1116,15 +1234,17 @@ function renderCal(dir) {
   const day = calSel && isPhone();
   $('#agendaTitle').textContent = day ? fromYmd(calSel).toLocaleDateString(undefined, {weekday: 'long', month: 'long', day: 'numeric'}) : 'Upcoming';
   $('#agendaAll').hidden = !day;
-  $('#agenda').innerHTML = day ? ((by[calSel] || []).sort(byWhen).map(apptRow).join('') || none('Nothing scheduled this day.')) + `<li class="none" style="padding:8px"><button class="btn" data-add="${calSel}" style="width:100%">+ Add appointment</button></li>`
-    : upcoming().slice(0, 8).map(apptRow).join('') || none('Nothing scheduled.');
+  $('#agenda').innerHTML = day ? ((by[calSel] || []).sort(byWhen).map(apptRow).join('') + (mby[calSel] || []).map(matAgendaRow).join('') || none('Nothing scheduled this day.')) + `<li class="none" style="padding:8px"><button class="btn" data-add="${calSel}" style="width:100%">+ Add appointment</button></li>`
+    : [...upcoming().map(a => [a.date + (a.time || ''), apptRow(a)]), ...matsDue().filter(m => m.needBy >= ymd(new Date())).map(m => [m.needBy + '~', matAgendaRow(m)])]
+      .sort((a, b) => a[0].localeCompare(b[0])).slice(0, 10).map(x => x[1]).join('') || none('Nothing scheduled.');
 }
 const calMove = n => { const d = new Date(cal.y, cal.m + n, 1); cal.y = d.getFullYear(); cal.m = d.getMonth(); renderCal(n); };
 $('#calPrev').onclick = () => calMove(-1); $('#calNext').onclick = () => calMove(1);
 $('#calToday').onclick = () => { const n = new Date(); cal.y = n.getFullYear(); cal.m = n.getMonth(); renderCal(0); };
 $('#view-cal').addEventListener('click', e => {
   const a = e.target.closest('[data-appt]'), d = e.target.closest('[data-date]');
-  const add = e.target.closest('[data-add]');
+  const add = e.target.closest('[data-add]'), mt = e.target.closest('[data-mat]');
+  if (mt && (!isPhone() || !mt.matches('.chip'))) return openMat(state.materials.find(m => m.id === mt.dataset.mat));
   if (e.target.closest('#agendaAll')) { calSel = null; return renderCal(); }
   if (add) return openAppt(null, add.dataset.add);
   if (d && isPhone()) { calSel = d.dataset.date; renderCal(); return $('#agendaPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'}); }
@@ -1141,6 +1261,9 @@ function openAppt(a, date, link) {
   f.title.value = a?.title || link?.title || ''; f.type.value = a?.type || (link ? 'install' : 'visit'); f.jobId.value = a?.jobId || link?.jobId || '';
   const lt = apptTask && state.jobs.flatMap(j => j.tasks).find(t => t.id === apptTask);
   $('#apptLink').hidden = !lt; if (lt) $('#apptLink').textContent = `Linked to the task “${lt.title}”. The date shows on the job card.`;
+  const aj = job(a?.jobId || link?.jobId), crewN = aj ? (aj.notesList || []).filter(n => n.kind === 'crew' || n.important) : [];
+  $('#apptCrew').hidden = !crewN.length;
+  if (crewN.length) $('#apptCrew').innerHTML = `${svg('alert')}<div class="grow"><b>Notes for the crew at ${esc(aj.address)}</b><ul>${crewN.map(n => `<li>${esc(n.text)}</li>`).join('')}</ul></div>`;
   f.date.value = a?.date || date || ymd(new Date()); f.time.value = a ? a.time : '09:00'; f.notes.value = a?.notes || '';
   $('#apptDelete').hidden = !a;
   $('#apptDlg').showModal();
@@ -1429,11 +1552,19 @@ function renderCustDetail() {
         <div>${svg('pin')}<span><a href="${mapUrl(j.address)}" target="_blank" rel="noopener">${esc(j.address)}</a></span></div>
         ${j.notes ? `<div>${svg('note')}<span>${esc(j.notes)}<small>Internal note, never shown to the client</small></span></div>` : ''}
       </div></div>
+      <div class="panel" style="animation:rise .4s .08s var(--ease) backwards"><div class="panel-h"><h2>Requirements &amp; crew notes</h2></div>
+        ${(j.notesList || []).map(noteRow).join('') || '<p class="sub">Nothing noted yet.</p>'}
+        <div class="tabadd"><button class="btn sm" data-c="addreq">+ Customer wants</button><button class="btn ghost sm" data-c="addcrew">+ Crew instruction</button><button class="btn ghost sm" data-c="crew">${svg('share')}Send to crew</button></div>
+      </div>
       <div class="panel" style="animation:rise .4s .1s var(--ease) backwards"><div class="panel-h"><h2>Project</h2><a data-c="job">Open job ›</a></div>
         <div class="jr-top"><b>${done} of ${total} steps done</b><span>${pct}%</span></div>${bar('c' + j.id, pct)}
         <p class="sub" style="margin-top:8px">${nx ? 'Next: ' + esc(nx.title) : total ? 'All scheduled work complete' : 'No steps yet'}</p>
         ${na ? `<ul class="list" style="margin-top:6px">${apptRow(na)}</ul>` : ''}
         <button class="btn" style="width:100%;margin-top:12px" data-c="mail"${j.email ? '' : ' disabled'}>Email the designed project update</button>
+      </div>
+      <div class="panel" style="animation:rise .4s .13s var(--ease) backwards"><div class="panel-h"><h2>Materials</h2>${matCount(j)}</div>
+        ${state.materials.filter(m => m.jobId === j.id).sort(matSort).map(matRow).join('') || '<p class="sub">No materials listed yet.</p>'}
+        <div class="tabadd"><button class="btn ghost sm" data-c="addmat" style="width:100%">+ Add material</button></div>
       </div>
       <div class="panel" style="animation:rise .4s .15s var(--ease) backwards"><div class="panel-h"><h2>Quotes</h2>${acc ? `<span class="sub">Accepted <b style="color:var(--green)">${money(acc)}</b></span>` : ''}</div>
         <ul class="list">${quotes.map(qRow).join('') || none('No quotes yet.')}</ul>
@@ -1458,6 +1589,13 @@ $('#custDetail').addEventListener('click', e => {
   if (c === 'job') { show('jobs'); return flashJob(j.id); }
   if (c === 'quote') return openQuote(null);
   if (c === 'post') return openUpd();
+  if (c === 'addreq' || c === 'addcrew') return openNote(j.id, null, c === 'addreq' ? 'req' : 'crew');
+  if (c === 'addmat') return openMat(null, j.id);
+  if (c === 'crew') return sendCrew(j);
+  const mn = e.target.closest('[data-mnext]'), mr = e.target.closest('[data-mat]'), nr = e.target.closest('[data-note]');
+  if (mn) return advanceMat(mn.dataset.mnext);
+  if (mr) return openMat(state.materials.find(m => m.id === mr.dataset.mat));
+  if (nr) return openNote(j.id, nr.dataset.note);
   if (q) return openQuote(state.quotes.find(x => x.id === q.dataset.quote));
   if (ph) { const [uid_, k] = ph.dataset.photo.split(':'); return openLb(state.updates.find(u => u.id === uid_).photos, +k); }
   if (us) return shareUpdate(state.updates.find(u => u.id === us.dataset.ushare));
@@ -1610,6 +1748,181 @@ $('#qDelete').onclick = () => {
   state.quotes = state.quotes.filter(q => q !== editQ); save(); closeDlg($('#quoteDlg')); renderCust();
 };
 
+/* ---------- requirements, crew notes, materials ---------- */
+Object.assign(CI, {
+  alert: '<path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17.5v.01"/>',
+  box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>'});
+const MST = {order: 'To order', ordered: 'Ordered', delivered: 'On site'}, MNEXT = {order: 'ordered', ordered: 'delivered', delivered: 'order'};
+const jobTab = new Map();
+const matSort = (a, b) => (a.status === 'delivered') - (b.status === 'delivered') || (a.needBy || '9').localeCompare(b.needBy || '9');
+const matsDue = () => state.materials.filter(m => m.status !== 'delivered' && job(m.jobId) && !job(m.jobId).archived).sort((a, b) => (a.needBy || '9').localeCompare(b.needBy || '9'));
+function matCount(j) {
+  const n = state.materials.filter(m => m.jobId === j.id && m.status === 'order').length;
+  return n ? `<span class="cn warn">${n} to order</span>` : '';
+}
+function needText(m) {
+  if (m.status === 'delivered') return 'On site' + (m.deliveredAt ? ' since ' + fmtDay(m.deliveredAt) : '');
+  if (!m.needBy) return 'No date set';
+  const today = ymd(new Date()), late = m.needBy < today, d = fmtDay(fromYmd(m.needBy));
+  return late ? `<span class="late">Late: needed ${d}</span>` : m.needBy === today ? '<span class="late">Needed on site today</span>' : 'Needed on site ' + d;
+}
+function matRow(m) {
+  const t = m.taskId && job(m.jobId)?.tasks.find(x => x.id === m.taskId);
+  return `<div class="mat" data-mat="${m.id}"><b class="ellip">${esc(m.name)}${m.qty ? ` <span class="sub" style="font-weight:400">· ${esc(m.qty)}</span>` : ''}</b>
+    <button class="mst ${m.status}${pulse.has(m.id) ? ' pulse' : ''}" data-mnext="${m.id}" title="Tap to change">${MST[m.status]}</button>
+    <span class="sub">${needText(m)}${m.supplier ? ' · ' + esc(m.supplier) : ''}${t ? ' · for ' + esc(t.title.toLowerCase()) : ''}</span></div>`;
+}
+function matAgendaRow(m) {
+  const j = job(m.jobId), d = m.needBy ? fromYmd(m.needBy) : null;
+  return `<li data-mat="${m.id}"><div class="dblock" style="background:${m.status === 'order' ? '#fee2e2' : 'var(--amber-bg)'}"><span>${d ? d.toLocaleDateString(undefined, {month: 'short'}).toUpperCase() : '—'}</span><b>${d ? d.getDate() : ''}</b></div>
+    <div class="grow"><b class="ellip">${esc(m.name)}</b><span class="sub ellip">${MST[m.status]} · ${esc(j ? j.address : '')}${m.supplier ? ' · ' + esc(m.supplier) : ''}</span></div><span class="mst ${m.status}" style="pointer-events:none">${m.status === 'order' ? 'Order' : 'Arriving'}</span></li>`;
+}
+function noteRow(n) {
+  return `<div class="nrow" data-note="${n.id}"><span class="ntag ${n.kind}">${n.kind === 'req' ? 'Customer wants' : 'Crew'}</span><span class="grow">${n.important ? '<b class="imp">Important: </b>' : ''}${esc(n.text)}</span></div>`;
+}
+function strip(j) {
+  const imp = (j.notesList || []).filter(n => n.important);
+  return imp.length ? `<div class="strip">${svg('alert')}<div class="grow"><b>Before you start</b><ul>${imp.map(n => `<li>${esc(n.text)}</li>`).join('')}</ul></div></div>` : '';
+}
+function cardTabs(j) {
+  const tab = jobTab.get(j.id) || 'steps', open = j.tasks.filter(t => t.status !== 'done').length;
+  const toOrder = state.materials.filter(m => m.jobId === j.id && m.status === 'order').length, nm = state.materials.filter(m => m.jobId === j.id).length;
+  const nn = (j.notesList || []).length;
+  const b = (k, label, cnt) => `<button type="button" class="${tab === k ? 'on' : ''}" data-act="tab" data-tab="${k}">${label}${cnt}</button>`;
+  return `<div class="ctabs">${b('steps', 'Steps', open ? `<span class="cn">${open}</span>` : '')}${b('mats', 'Materials', toOrder ? `<span class="cn warn">${toOrder} to order</span>` : nm ? `<span class="cn">${nm}</span>` : '')}${b('notes', 'Notes', nn ? `<span class="cn">${nn}</span>` : '')}</div>`;
+}
+function matsPane(j) {
+  const ms = state.materials.filter(m => m.jobId === j.id).sort(matSort);
+  return `<div class="tabpane">${ms.map(matRow).join('') || '<div class="empty">No materials yet. Add anything that has to be ordered for this job.</div>'}
+    <div class="tabadd"><button class="btn sm" data-act="addmat">+ Add material</button></div></div>`;
+}
+function notesPane(j) {
+  const ns = [...(j.notesList || [])].sort((a, b) => b.important - a.important || (a.kind === 'crew' ? -1 : 1));
+  return `<div class="tabpane">${ns.map(noteRow).join('') || '<div class="empty">No requirements or crew instructions yet.</div>'}
+    <div class="tabadd"><button class="btn sm" data-act="addreq">+ Customer wants</button><button class="btn ghost sm" data-act="addcrew">+ Crew instruction</button>${ns.length ? `<button class="btn ghost sm" data-act="crew">${svg('share')}Send to crew</button>` : ''}</div></div>`;
+}
+function setMat(m, status, quiet) {
+  const prev = {status: m.status, orderedAt: m.orderedAt, deliveredAt: m.deliveredAt};
+  m.status = status;
+  if (status === 'ordered') m.orderedAt = Date.now();
+  if (status === 'delivered') m.deliveredAt = Date.now(); else m.deliveredAt = null;
+  pulse.add(m.id); save();
+  if (!quiet) toast(`${m.name}: ${MST[status].toLowerCase()}`, () => { Object.assign(m, prev); save(); refresh(); });
+}
+function advanceMat(id) { const m = state.materials.find(x => x.id === id); setMat(m, MNEXT[m.status]); refresh(); }
+
+jobsEl.addEventListener('click', e => {
+  const card = e.target.closest('[data-job]'); if (!card) return;
+  const j = job(card.dataset.job), act = e.target.closest('[data-act]')?.dataset.act;
+  if (act === 'tab') { jobTab.set(j.id, e.target.closest('[data-tab]').dataset.tab); return renderJobs(); }
+  if (act === 'addmat') return openMat(null, j.id);
+  if (act === 'addreq' || act === 'addcrew') return openNote(j.id, null, act === 'addreq' ? 'req' : 'crew');
+  if (act === 'crew') return sendCrew(j);
+  const mn = e.target.closest('[data-mnext]'), mr = e.target.closest('[data-mat]'), nr = e.target.closest('[data-note]');
+  if (mn) return advanceMat(mn.dataset.mnext);
+  if (mr) return openMat(state.materials.find(m => m.id === mr.dataset.mat));
+  if (nr) return openNote(j.id, nr.dataset.note);
+});
+
+/* note dialog */
+let noteEdit = {jobId: null, note: null, kind: 'req'};
+const NOTE_PH = {req: 'Plaster colour: Pebble Tec Midnight Blue', crew: 'Gate code 4412. Dogs in the backyard, keep the gate shut.'};
+function openNote(jobId, noteId, kind) {
+  const j = job(jobId), n = noteId ? (j.notesList || []).find(x => x.id === noteId) : null, f = $('#noteForm');
+  noteEdit = {jobId, note: n, kind: n ? n.kind : kind || 'req'};
+  f.text.value = n ? n.text : ''; f.important.checked = !!n?.important;
+  $('#noteFor').textContent = (j.client ? j.client + ' · ' : '') + j.address;
+  $('#noteDelete').hidden = !n; syncNote(); $('#noteDlg').showModal();
+}
+function syncNote() {
+  $('#noteSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.kind === noteEdit.kind));
+  $('#noteTitle').textContent = noteEdit.kind === 'req' ? 'What the customer wants' : 'Instruction for the crew';
+  $('#noteForm').text.placeholder = NOTE_PH[noteEdit.kind];
+}
+$('#noteSeg').onclick = e => { const b = e.target.closest('[data-kind]'); if (b) { noteEdit.kind = b.dataset.kind; syncNote(); } };
+$('#noteForm').onsubmit = e => {
+  e.preventDefault();
+  const j = job(noteEdit.jobId), f = e.target, d = {kind: noteEdit.kind, text: f.text.value.trim(), important: f.important.checked};
+  if (!d.text) return;
+  j.notesList = j.notesList || [];
+  if (noteEdit.note) Object.assign(noteEdit.note, d); else j.notesList.push({id: uid(), ...d});
+  if (view === 'jobs') jobTab.set(j.id, 'notes');
+  save(); closeDlg($('#noteDlg')); refresh(); toast('Saved');
+};
+$('#noteDelete').onclick = () => {
+  const j = job(noteEdit.jobId), n = noteEdit.note, i = j.notesList.indexOf(n);
+  j.notesList.splice(i, 1); save(); closeDlg($('#noteDlg')); refresh();
+  toast('Note deleted', () => { j.notesList.splice(i, 0, n); save(); refresh(); });
+};
+
+/* material dialog */
+let matEdit = {jobId: null, mat: null};
+function stepAppt(taskId) {
+  if (!taskId) return null;
+  const j = state.jobs.find(x => x.tasks.some(t => t.id === taskId)), t = j && j.tasks.find(x => x.id === taskId), name = t ? t.title.trim().toLowerCase() : '';
+  return state.appts.filter(a => a.taskId === taskId || (j && a.jobId === j.id && a.title.trim().toLowerCase() === name)).sort(byWhen)[0] || null;
+}
+function openMat(m, jobId) {
+  const j = job(m ? m.jobId : jobId); if (!j) return;
+  matEdit = {jobId: j.id, mat: m || null};
+  const f = $('#matForm');
+  $('#matTitle').textContent = m ? 'Material' : 'Add material';
+  $('#matFor').textContent = (j.client ? j.client + ' · ' : '') + j.address;
+  f.taskId.innerHTML = '<option value="">Not linked to a step</option>' + j.tasks.filter(t => t.status !== 'done' || t.id === m?.taskId).map(t => `<option value="${t.id}">${esc(t.title)}</option>`).join('');
+  f.name.value = m?.name || ''; f.qty.value = m?.qty || ''; f.supplier.value = m?.supplier || '';
+  f.taskId.value = m?.taskId || ''; f.needBy.value = m?.needBy || ''; f.status.value = m?.status || 'order'; f.notes.value = m?.notes || '';
+  $('#suppliers').innerHTML = [...new Set(state.materials.map(x => x.supplier).filter(Boolean))].sort().map(x => `<option value="${esc(x)}">`).join('');
+  $('#matDelete').hidden = !m; matHint(false); $('#matDlg').showModal();
+}
+function matHint(auto) {
+  const f = $('#matForm'), a = stepAppt(f.taskId.value), h = $('#matHint');
+  if (!a) { h.hidden = true; return; }
+  const before = ymd(new Date(fromYmd(a.date).getTime() - 864e5));
+  if (auto && !f.needBy.value) f.needBy.value = before;
+  h.hidden = false;
+  h.innerHTML = `That step is on the calendar for ${fmtDay(fromYmd(a.date))}.${f.needBy.value === before ? ' The delivery date is set to the day before.' : ` <button type="button" class="linkbtn" id="matUse">Use the day before (${fmtDay(fromYmd(before))})</button>`}`;
+  const u = $('#matUse'); if (u) u.onclick = () => { f.needBy.value = before; matHint(false); };
+}
+$('#matForm').taskId.onchange = () => matHint(true);
+$('#matForm').needBy.onchange = () => matHint(false);
+$('#matForm').onsubmit = e => {
+  e.preventDefault();
+  const f = e.target, d = {name: f.name.value.trim(), qty: f.qty.value.trim(), supplier: f.supplier.value.trim(), taskId: f.taskId.value, needBy: f.needBy.value, notes: f.notes.value.trim()};
+  if (!d.name) return;
+  const m = matEdit.mat || {id: uid(), jobId: matEdit.jobId, status: 'order'};
+  Object.assign(m, d);
+  if (f.status.value !== m.status || !matEdit.mat) { const st = f.status.value; m.status = st; if (st === 'ordered' && !m.orderedAt) m.orderedAt = Date.now(); m.deliveredAt = st === 'delivered' ? (m.deliveredAt || Date.now()) : null; }
+  if (!matEdit.mat) state.materials.push(m);
+  if (view === 'jobs') jobTab.set(m.jobId, 'mats');
+  pulse.add(m.id); save(); closeDlg($('#matDlg')); refresh(); toast('Material saved');
+};
+$('#matDelete').onclick = () => {
+  const m = matEdit.mat, i = state.materials.indexOf(m);
+  state.materials.splice(i, 1); save(); closeDlg($('#matDlg')); refresh();
+  toast('Material removed', () => { state.materials.splice(i, 0, m); save(); refresh(); });
+};
+
+/* crew sheet */
+function crewSheet(j) {
+  const nx = j.tasks.find(t => t.status === 'next') || j.tasks.find(t => t.status === 'todo');
+  const na = upcoming().find(a => a.jobId === j.id), ns = j.notesList || [];
+  const crew = ns.filter(n => n.kind === 'crew'), req = ns.filter(n => n.kind === 'req');
+  const mats = matsDue().filter(m => m.jobId === j.id && m.status === 'ordered');
+  const L = [`JOB: ${j.address}${j.client ? ' (' + j.client + ')' : ''}`, `Map: ${mapUrl(j.address)}`];
+  if (nx) L.push(`Next step: ${nx.title}${nx.who ? ' (' + nx.who + ')' : ''}`);
+  if (na) L.push(`Scheduled: ${na.title}, ${fmtDay(fromYmd(na.date))}${na.time ? ' at ' + fmtClock(na.time) : ''}`);
+  if (crew.length) L.push('', 'CREW INSTRUCTIONS', ...crew.map(n => '- ' + (n.important ? 'IMPORTANT: ' : '') + n.text));
+  if (req.length) L.push('', 'CUSTOMER WANTS', ...req.map(n => '- ' + (n.important ? 'IMPORTANT: ' : '') + n.text));
+  if (mats.length) L.push('', 'MATERIALS ARRIVING', ...mats.map(m => `- ${m.name}${m.qty ? ' (' + m.qty + ')' : ''}${m.needBy ? ', ' + fmtDay(fromYmd(m.needBy)) : ''}`));
+  return L.join('\n');
+}
+async function sendCrew(j) {
+  const text = crewSheet(j);
+  if (navigator.share && touch()) { try { await navigator.share({title: 'Job sheet: ' + j.address, text}); } catch (e) { if (e.name !== 'AbortError') toast('Could not open sharing'); } return; }
+  let ok = false; try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {}
+  toast(ok ? 'Crew sheet copied. Paste it into a text or email to the crew.' : 'Could not copy the crew sheet');
+}
+
 /* ---------- photo viewer ---------- */
 let lb = {ids: [], i: 0};
 function openLb(ids, i) { lb = {ids, i}; drawLb(); $('#lb').showModal(); }
@@ -1675,7 +1988,7 @@ $('#importFile').onchange = async e => {
     const d = JSON.parse(await file.text());
     if (!Array.isArray(d.jobs)) throw 0;
     if (confirm('Replace everything in this app with the backup?')) {
-      state = {settings: {...DEFAULTS, ...d.settings}, jobs: d.jobs, appts: d.appts || [], log: d.log || [], quotes: d.quotes || [], updates: d.updates || [], custSeeded: true, logSeeded: true};
+      state = {settings: {...DEFAULTS, ...d.settings}, jobs: d.jobs, appts: d.appts || [], log: d.log || [], quotes: d.quotes || [], updates: d.updates || [], materials: d.materials || [], custSeeded: true, logSeeded: true, siteSeeded: true};
       await DB.clear().catch(() => {}); urlCache.clear();
       for (const [id, f] of Object.entries(d.files || {})) await DB.put(id, {name: f.name, type: f.type, blob: await (await fetch(f.data)).blob()});
       custId = null; save(); renderChrome(); renderSettings(); toast('Backup imported');
@@ -1684,8 +1997,8 @@ $('#importFile').onchange = async e => {
   e.target.value = '';
 };
 $('#resetBtn').onclick = () => {
-  if (!confirm('Replace all jobs, customers, quotes, photos, appointments and sent emails with the sample data? Settings are kept.')) return;
-  Object.assign(state, seed(), {log: [], quotes: [], updates: []}); seedCustomers(); seedLog(); DB.clear().catch(() => {}); urlCache.clear(); custId = null; save(); toast('Sample data restored');
+  if (!confirm('Replace all jobs, customers, materials, quotes, photos, appointments and sent emails with the sample data? Settings are kept.')) return;
+  Object.assign(state, seed(), {log: [], quotes: [], updates: [], materials: []}); seedCustomers(); seedSite(); seedLog(); DB.clear().catch(() => {}); urlCache.clear(); custId = null; save(); toast('Sample data restored');
 };
 
 /* ---------- views ---------- */
