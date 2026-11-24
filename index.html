@@ -631,7 +631,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
 <dialog id="jobDlg"><form id="jobForm">
   <div class="dlg-h"><h2 id="jobDlgTitle">New job</h2><button class="x" type="button" data-close>×</button></div>
   <div class="dlg-b">
-    <label class="f">Job address<input class="in" name="address" required placeholder="1028 Concord"></label>
+    <label class="f">Job address<input class="in" name="address" required placeholder="740 Maple Fern Way"></label>
     <div class="two">
       <label class="f">Client name<input class="in" name="client" placeholder="Jane Smith"></label>
       <label class="f">Mobile phone<input class="in" name="phone" type="tel" placeholder="(555) 555-0100"></label>
@@ -799,7 +799,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
   <div class="dlg-h"><h2>Paste from Excel</h2><button class="x" type="button" data-close>×</button></div>
   <div class="dlg-b">
     <p class="sub">In the planning sheet, select the rows (address, work, who, status columns), copy, and paste below. A row with an address starts a job; rows under it are its tasks. Existing jobs are matched by address and updated, never duplicated.</p>
-    <textarea class="in" id="xlText" rows="10" placeholder="1028 Concord&#9;Order decking&#9;In-house crew&#9;Complete" style="font-family:ui-monospace,Consolas,monospace;font-size:13px;white-space:pre"></textarea>
+    <textarea class="in" id="xlText" rows="10" placeholder="740 Maple Fern Way&#9;Order decking&#9;In-house crew&#9;Complete" style="font-family:ui-monospace,Consolas,monospace;font-size:13px;white-space:pre"></textarea>
   </div>
   <div class="dlg-f"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="button" id="xlGo">Import</button></div>
 </dialog>
@@ -807,7 +807,7 @@ dialog#lb{background:#0b1220;width:min(1100px,calc(100vw - 24px));max-width:100v
 <div id="toast"></div>
 
 <script>
-const KEY = 'pools-and-spa.v3';
+const KEY = 'pools-and-spa.v4';
 const $ = (q, el = document) => el.querySelector(q);
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -830,18 +830,18 @@ function seed() {
   const T = (title, who = '', status = 'todo') => ({id: uid(), title, who, status, createdAt: Date.now(), doneAt: null, notified: true});
   const J = (address, client, email, tasks) => ({id: uid(), address, client, email, notes: '', archived: false, lastEmailAt: null, tasks});
   const jobs = [
-    J('1028 Concord', 'Marissa Ortega', 'marissa.ortega@example.com', [
+    J('740 Maple Fern Way', 'Delia Fairmont', 'delia.fairmont@example.com', [
       T('Order coping tile and splitface', 'In-house crew', 'done'), T('Order decking', 'In-house crew', 'done'),
-      T('Order equipment', 'In-house crew', 'done'), T('Long plumb', 'Calver Construction', 'done'),
-      T('Concrete pad', 'AA Home', 'done'), T('Drop off tile', '', 'next'), T('Tile and coping install')]),
-    J('17548 Julees Walk Lane', 'Tom Whitfield', 'tom.whitfield@example.com', [
-      T('Backfill trenches', 'In-house crew', 'done'), T('Concrete pad', 'AA Home', 'done'),
-      T('Build fence', 'AA Home'), T('Electrical connections', 'Garrick'), T('Gas line', '', 'done')]),
-    J('11421 Fountaingrove Drive', 'Priya Raman', 'priya.raman@example.com', [
-      T('Long plumb', 'Calver Construction', 'done'), T('Move dirt', 'Olbin', 'done'),
+      T('Order equipment', 'In-house crew', 'done'), T('Long plumb', 'Brightline Builders', 'done'),
+      T('Concrete pad', 'Summit Concrete Co.', 'done'), T('Drop off tile', '', 'next'), T('Tile and coping install')]),
+    J('482 Bramblewood Court', 'Rowan Pike', 'rowan.pike@example.com', [
+      T('Backfill trenches', 'In-house crew', 'done'), T('Concrete pad', 'Summit Concrete Co.', 'done'),
+      T('Build fence', 'Summit Concrete Co.'), T('Electrical connections', 'Ellison Electric'), T('Gas line', '', 'done')]),
+    J('2206 Larkspur Hollow', 'Lena Okafor', 'lena.okafor@example.com', [
+      T('Long plumb', 'Brightline Builders', 'done'), T('Move dirt', 'Redstone Hauling', 'done'),
       T('Get sand delivered', 'In-house crew', 'done'), T('Backfill trenches', 'In-house crew', 'next'),
-      T('Order equipment', 'In-house crew', 'done'), T('Concrete pad', 'AA Home', 'done')]),
-    J('5117 Grassy Creek', 'Hannah Kessler', 'hannah.kessler@example.com', [T('In permitting', '', 'done'), T('Dig rebar', '', 'done')]),
+      T('Order equipment', 'In-house crew', 'done'), T('Concrete pad', 'Summit Concrete Co.', 'done')]),
+    J('913 Quillan Ridge', 'Gus Albright', 'gus.albright@example.com', [T('In permitting', '', 'done'), T('Dig rebar', '', 'done')]),
   ];
   const A = (n, time, title, type, j) => ({id: uid(), title, type, jobId: jobs[j].id, date: ymd(addDays(n)), time, notes: ''});
   const appts = [
@@ -855,13 +855,13 @@ function seed() {
 function seedCustomers() {
   const D = 864e5, now = Date.now();
   const info = {
-    '1028 Concord': ['(555) 010-4417', [['Pool, spa and decking', 68500, 'accepted', -60], ['Waterfall lights add-on', 2350, 'sent', -2]],
+    '740 Maple Fern Way': ['(555) 010-0142', [['Pool, spa and decking', 68500, 'accepted', -60], ['Waterfall lights add-on', 2350, 'sent', -2]],
       [[1, 'Concrete pad is poured and curing. Tile arrives tomorrow morning.'], [8, 'Long plumb finished and pressure tested. Everything held.']]],
-    '17548 Julees Walk Lane': ['(555) 010-2283', [['Fence and gas line', 6800, 'accepted', -40]],
+    '482 Bramblewood Court': ['(555) 010-0187', [['Fence and gas line', 6800, 'accepted', -40]],
       [[6, 'Gas line is in and the trenches are backfilled. Fence posts go in next.']]],
-    '11421 Fountaingrove Drive': ['(555) 010-7790', [['Pool and equipment package', 54200, 'accepted', -75]],
+    '2206 Larkspur Hollow': ['(555) 010-0163', [['Pool and equipment package', 54200, 'accepted', -75]],
       [[3, 'Sand delivered and the equipment is ordered. Backfill is booked for this week.']]],
-    '5117 Grassy Creek': ['(555) 010-3352', [['Pool build', 49900, 'accepted', -30], ['Spa upgrade', 9400, 'draft', -1]],
+    '913 Quillan Ridge': ['(555) 010-0129', [['Pool build', 49900, 'accepted', -30], ['Spa upgrade', 9400, 'draft', -1]],
       [[9, 'Permit approved. The dig is done and the rebar is set.']]],
   };
   state.jobs.forEach(j => {
@@ -875,15 +875,15 @@ function seedCustomers() {
 
 function seedSite() {
   const info = {
-    '1028 Concord': {notes: [['crew', 'Gate code 4412. Use the side gate to the left of the garage.', 1], ['crew', 'Two dogs in the backyard. Keep the gate shut at all times.', 1],
+    '740 Maple Fern Way': {notes: [['crew', 'Gate code 1234. Use the side gate to the left of the garage.', 1], ['crew', 'Two dogs in the backyard. Keep the gate shut at all times.', 1],
         ['req', 'Plaster colour: Pebble Tec Midnight Blue.'], ['req', 'Waterfall lights on the spa spillway (add-on quote).'], ['crew', 'No work before 8 AM; the neighbours have complained about noise.']],
       mats: [['Travertine coping', '64 linear ft', 'Stone yard', 1, 'ordered', 'Drop off tile'], ['Glass waterline tile', '12 boxes', 'Tile supply', 1, 'ordered', 'Drop off tile'],
         ['LED waterfall lights', '2', 'Pool supply', 9, 'order', 'Tile and coping install'], ['Plaster: Pebble Tec Midnight Blue', '1 pool', 'Pebble Tec', 24, 'order', ''], ['Pump, filter and heater', '1 set', 'Pool supply', -10, 'delivered', 'Order equipment']]},
-    '17548 Julees Walk Lane': {notes: [['crew', 'Gas meter is on the north side. Call Garrick before digging near it.', 1], ['req', 'Fence: 5 ft black aluminium with a self-closing gate.']],
+    '482 Bramblewood Court': {notes: [['crew', 'Gas meter is on the north side. Call Ellison Electric before digging near it.', 1], ['req', 'Fence: 5 ft black aluminium with a self-closing gate.']],
       mats: [['Aluminium fence panels', '18 panels + gate', 'Fence supply', 2, 'ordered', 'Build fence'], ['Gas pipe and fittings', '1 kit', 'Plumbing supply', -8, 'delivered', 'Gas line']]},
-    '11421 Fountaingrove Drive': {notes: [['crew', 'Park on the street; the driveway was just sealed.', 1], ['req', 'Hide the equipment pad behind the side fence.']],
+    '2206 Larkspur Hollow': {notes: [['crew', 'Park on the street; the driveway was just sealed.', 1], ['req', 'Hide the equipment pad behind the side fence.']],
       mats: [['Backfill sand', '20 yards', 'Sand and gravel', -4, 'delivered', 'Get sand delivered'], ['Pool equipment package', '1 set', 'Pool supply', 12, 'ordered', '']]},
-    '5117 Grassy Creek': {notes: [['req', 'Spa upgrade under review: hold the spa plumbing until the quote is signed.', 1], ['crew', 'Steel inspection is booked. Leave the rebar uncovered.']],
+    '913 Quillan Ridge': {notes: [['req', 'Spa upgrade under review: hold the spa plumbing until the quote is signed.', 1], ['crew', 'Steel inspection is booked. Leave the rebar uncovered.']],
       mats: [['#4 rebar', '2 tons', 'Steel supply', -6, 'delivered', 'Dig rebar'], ['Shotcrete', '28 yards', 'Concrete supply', 16, 'order', '']]},
   };
   state.jobs.forEach(j => {
@@ -911,10 +911,10 @@ function load() {
 }
 function seedLog() {
   const samples = [
-    ['1028 Concord', 1, 'The concrete pad is poured and curing. Tile is being dropped off next, with the tile and coping install to follow.'],
-    ['11421 Fountaingrove Drive', 3, 'Sand has been delivered and your equipment is ordered. Backfilling the trenches is next.'],
-    ['17548 Julees Walk Lane', 6, 'The gas line is in and the trenches are backfilled. The fence and electrical connections are coming up.'],
-    ['5117 Grassy Creek', 9, 'Your permit is approved and the dig and rebar are complete. We will be in touch with the next steps.']];
+    ['740 Maple Fern Way', 1, 'The concrete pad is poured and curing. Tile is being dropped off next, with the tile and coping install to follow.'],
+    ['2206 Larkspur Hollow', 3, 'Sand has been delivered and your equipment is ordered. Backfilling the trenches is next.'],
+    ['482 Bramblewood Court', 6, 'The gas line is in and the trenches are backfilled. The fence and electrical connections are coming up.'],
+    ['913 Quillan Ridge', 9, 'Your permit is approved and the dig and rebar are complete. We will be in touch with the next steps.']];
   state.log = samples.map(([address, days, note]) => {
     const j = state.jobs.find(x => x.address === address);
     if (!j || !j.email) return null;
@@ -1810,7 +1810,7 @@ jobsEl.addEventListener('click', e => {
 
 /* note dialog */
 let noteEdit = {jobId: null, note: null, kind: 'req'};
-const NOTE_PH = {req: 'Plaster colour: Pebble Tec Midnight Blue', crew: 'Gate code 4412. Dogs in the backyard, keep the gate shut.'};
+const NOTE_PH = {req: 'Plaster colour: Pebble Tec Midnight Blue', crew: 'Gate code 1234. Dogs in the backyard, keep the gate shut.'};
 function openNote(jobId, noteId, kind) {
   const j = job(jobId), n = noteId ? (j.notesList || []).find(x => x.id === noteId) : null, f = $('#noteForm');
   noteEdit = {jobId, note: n, kind: n ? n.kind : kind || 'req'};
